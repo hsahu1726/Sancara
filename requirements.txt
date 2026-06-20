@@ -10,3 +10,4 @@ scipy>=1.10.0
 joblib>=1.2.0
 shap>=0.41.0
 python-multipart>=0.0.6
+pyarrow>=14.0.0
