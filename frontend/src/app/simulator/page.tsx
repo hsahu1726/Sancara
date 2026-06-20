@@ -23,12 +23,12 @@ const ALL_ZONES = [
 ];
 
 const PRESETS = [
-  { label: '🌧️ Peak Hour Flood',         cause: 'water_logging',    corridor: 'ORR East 2',    hour: 9,  priority: 'High', closure: true  },
-  { label: '🚔 VIP on Bellary Road',      cause: 'vip_movement',     corridor: 'Bellary Road 1', hour: 11, priority: 'High', closure: true  },
-  { label: '🌙 Midnight Breakdown',       cause: 'vehicle_breakdown', corridor: 'Mysore Road',   hour: 1,  priority: 'Low',  closure: false },
-  { label: '🎪 Weekend Public Event',     cause: 'public_event',     corridor: 'Tumkur Road',   hour: 18, priority: 'High', closure: false },
-  { label: '🚶 Morning Procession',       cause: 'procession',       corridor: 'Old Madras Road',hour: 7,  priority: 'High', closure: true  },
-  { label: '💥 CBD Accident',             cause: 'accident',         corridor: 'CBD 1',          hour: 17, priority: 'High', closure: true  },
+  { label: 'Peak Hour Flood',         cause: 'water_logging',    corridor: 'ORR East 2',    hour: 9,  priority: 'High', closure: true  },
+  { label: 'VIP on Bellary Road',      cause: 'vip_movement',     corridor: 'Bellary Road 1', hour: 11, priority: 'High', closure: true  },
+  { label: 'Midnight Breakdown',       cause: 'vehicle_breakdown', corridor: 'Mysore Road',   hour: 1,  priority: 'Low',  closure: false },
+  { label: 'Weekend Public Event',     cause: 'public_event',     corridor: 'Tumkur Road',   hour: 18, priority: 'High', closure: false },
+  { label: 'Morning Procession',       cause: 'procession',       corridor: 'Old Madras Road',hour: 7,  priority: 'High', closure: true  },
+  { label: 'CBD Accident',             cause: 'accident',         corridor: 'CBD 1',          hour: 17, priority: 'High', closure: true  },
 ];
 
 const IMPACT_COLORS = ['#22c55e','#eab308','#f97316','#ef4444'];
@@ -202,8 +202,8 @@ export default function SimulatorPage() {
 
       {/* Side-by-side forms */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <ScenarioForm label="🔵 Base Scenario" value={base} onChange={setBase} accent="border-l-blue-400 dark:border-l-blue-600" />
-        <ScenarioForm label="🟠 What-If Scenario" value={whatif} onChange={setWhatif} accent="border-l-orange-400 dark:border-l-orange-500" />
+        <ScenarioForm label="Base Scenario" value={base} onChange={setBase} accent="border-l-blue-400 dark:border-l-blue-600" />
+        <ScenarioForm label="What-If Scenario" value={whatif} onChange={setWhatif} accent="border-l-orange-400 dark:border-l-orange-500" />
       </div>
 
       <div className="flex justify-center">
@@ -219,11 +219,11 @@ export default function SimulatorPage() {
           {/* Result cards */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="card space-y-3 border-l-4 border-l-blue-400 dark:border-l-blue-600">
-              <p className="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">🔵 Base Result</p>
+              <p className="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Base Result</p>
               <ResultCard result={baseResult} />
             </div>
             <div className="card space-y-3 border-l-4 border-l-orange-400 dark:border-l-orange-500">
-              <p className="text-xs font-bold text-orange-600 dark:text-orange-400 uppercase tracking-wider">🟠 What-If Result</p>
+              <p className="text-xs font-bold text-orange-600 dark:text-orange-400 uppercase tracking-wider">What-If Result</p>
               <ResultCard result={whatifResult} />
             </div>
           </div>

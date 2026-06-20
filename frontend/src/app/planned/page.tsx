@@ -11,12 +11,12 @@ const TOTAL_PLANNED = 467;
 const TOTAL_EVENTS = 8173;
 
 const BY_CAUSE = [
-  { name: 'Construction',   value: 311, color: '#F97316', icon: '🏗️', kn: 'ನಿರ್ಮಾಣ ಕಾರ್ಯ' },
-  { name: 'Public Event',   value: 84,  color: '#8B5CF6', icon: '🎪', kn: 'ಸಾರ್ವಜನಿಕ ಕಾರ್ಯಕ್ರಮ' },
-  { name: 'Procession',     value: 38,  color: '#EC4899', icon: '🚶', kn: 'ಮೆರವಣಿಗೆ' },
-  { name: 'VIP Movement',   value: 20,  color: '#F59E0B', icon: '🚔', kn: 'ವಿಐಪಿ ಸಂಚಾರ' },
-  { name: 'Protest',        value: 8,   color: '#EF4444', icon: '📢', kn: 'ಪ್ರತಿಭಟನೆ' },
-  { name: 'Others',         value: 6,   color: '#94A3B8', icon: '📋', kn: 'ಇತರೆ' },
+  { name: 'Construction',   value: 311, color: '#F97316', icon: '', kn: 'ನಿರ್ಮಾಣ ಕಾರ್ಯ' },
+  { name: 'Public Event',   value: 84,  color: '#8B5CF6', icon: '', kn: 'ಸಾರ್ವಜನಿಕ ಕಾರ್ಯಕ್ರಮ' },
+  { name: 'Procession',     value: 38,  color: '#EC4899', icon: '', kn: 'ಮೆರವಣಿಗೆ' },
+  { name: 'VIP Movement',   value: 20,  color: '#F59E0B', icon: '', kn: 'ವಿಐಪಿ ಸಂಚಾರ' },
+  { name: 'Protest',        value: 8,   color: '#EF4444', icon: '', kn: 'ಪ್ರತಿಭಟನೆ' },
+  { name: 'Others',         value: 6,   color: '#94A3B8', icon: '', kn: 'ಇತರೆ' },
 ];
 
 const BY_CORRIDOR = [
@@ -68,11 +68,11 @@ const TOP_JUNCTIONS = [
 ];
 
 const INSIGHTS = [
-  { icon: '🌙', text: '66% of all planned events start between 20:00–23:00 (night shift to minimise daytime disruption).' },
-  { icon: '🏗️', text: 'Construction dominates at 66.6% (311 of 467) — BBMP infrastructure work is the primary planned disruptor.' },
-  { icon: '📍', text: 'ORR East 2 is the most impacted corridor with 94 planned events — concentrated infrastructure upgrades.' },
-  { icon: '🗺️', text: 'East Zone 1 and North Zone 1 together account for 22% of all planned events.' },
-  { icon: '🚔', text: 'VIP movements have a 100% road closure rate — highest operational burden per event.' },
+  { icon: '', text: '66% of all planned events start between 20:00–23:00 (night shift to minimise daytime disruption).' },
+  { icon: '', text: 'Construction dominates at 66.6% (311 of 467) — BBMP infrastructure work is the primary planned disruptor.' },
+  { icon: '', text: 'ORR East 2 is the most impacted corridor with 94 planned events — concentrated infrastructure upgrades.' },
+  { icon: '', text: 'East Zone 1 and North Zone 1 together account for 22% of all planned events.' },
+  { icon: '', text: 'VIP movements have a 100% road closure rate — highest operational burden per event.' },
 ];
 
 const CUSTOM_TOOLTIP = ({ active, payload, label }: any) => {
@@ -149,7 +149,7 @@ export default function PlannedPage() {
               {BY_CAUSE.map(item => (
                 <div key={item.name} className="flex items-center gap-2">
                   <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: item.color }} />
-                  <span className="text-xs text-ink-secondary dark:text-slate-300 flex-1">{item.icon} {item.name}</span>
+                  <span className="text-xs text-ink-secondary dark:text-slate-300 flex-1">{item.name}</span>
                   <span className="text-xs font-bold text-ink dark:text-slate-100">{item.value}</span>
                   <span className="text-[10px] text-ink-muted dark:text-slate-500 w-10 text-right">
                     {(item.value / TOTAL_PLANNED * 100).toFixed(0)}%
@@ -246,7 +246,7 @@ export default function PlannedPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {INSIGHTS.map((ins, i) => (
             <div key={i} className="flex gap-3 bg-surface-subtle dark:bg-slate-900/60 rounded-xl p-3.5 border border-surface-border/40 dark:border-slate-800/60">
-              <span className="text-xl shrink-0">{ins.icon}</span>
+              {ins.icon && <span className="text-xl shrink-0">{ins.icon}</span>}
               <p className="text-xs text-ink-secondary dark:text-slate-300 leading-relaxed">{ins.text}</p>
             </div>
           ))}

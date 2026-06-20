@@ -85,10 +85,10 @@ function generateBroadcast(
   const timeKn = `ಅಂದಾಜು ${Math.round(resolutionMin)} ನಿಮಿಷಗಳಲ್ಲಿ ಸರಿಪಡಿಸಲಾಗುವುದು.`;
   const period = hour >= 5 && hour < 12 ? 'ಬೆಳಿಗ್ಗೆ' : hour >= 12 && hour < 17 ? 'ಮಧ್ಯಾಹ್ನ' : hour >= 17 && hour < 21 ? 'ಸಂಜೆ' : 'ರಾತ್ರಿ';
 
-  const kn = `🔊 ಸಂಚಾರ ಸೂಚನೆ — ಬೆಂಗಳೂರು\n\n${period} ${corridorKn} ಮಾರ್ಗದಲ್ಲಿ ${causeKn} ಕಾರಣದಿಂದ ಸಂಚಾರ ಅಡಚಣೆ ಉಂಟಾಗಿದೆ. ${closureKn} ತೀವ್ರತೆ: ${sevKn} (${priKn}). ${timeKn} ಪ್ರಯಾಣಿಕರು ಪರ್ಯಾಯ ಮಾರ್ಗ ಬಳಸಬೇಕಾಗಿ ವಿನಂತಿ.\n\n— ಬೆಂಗಳೂರು ಸಂಚಾರ ಪೊಲೀಸ್ / ಬಿಬಿಎಂಪಿ`;
+  const kn = `ಸಂಚಾರ ಸೂಚನೆ — ಬೆಂಗಳೂರು\n\n${period} ${corridorKn} ಮಾರ್ಗದಲ್ಲಿ ${causeKn} ಕಾರಣದಿಂದ ಸಂಚಾರ ಅಡಚಣೆ ಉಂಟಾಗಿದೆ. ${closureKn} ತೀವ್ರತೆ: ${sevKn} (${priKn}). ${timeKn} ಪ್ರಯಾಣಿಕರು ಪರ್ಯಾಯ ಮಾರ್ಗ ಬಳಸಬೇಕಾಗಿ ವಿನಂತಿ.\n\n— ಬೆಂಗಳೂರು ಸಂಚಾರ ಪೊಲೀಸ್ / ಬಿಬಿಎಂಪಿ`;
 
   const enClosure = closure ? 'Road closure in effect.' : 'Traffic is moving slowly.';
-  const en = `🔊 Traffic Advisory — Bengaluru\n\nA ${cause.replace(/_/g, ' ')} has been reported on ${corridor}. ${enClosure} Severity: ${severityLabel} (${priority} Priority). Estimated resolution: ~${Math.round(resolutionMin)} minutes. Commuters are advised to use alternate routes.\n\n— Bengaluru Traffic Police / BBMP`;
+  const en = `Traffic Advisory — Bengaluru\n\nA ${cause.replace(/_/g, ' ')} has been reported on ${corridor}. ${enClosure} Severity: ${severityLabel} (${priority} Priority). Estimated resolution: ~${Math.round(resolutionMin)} minutes. Commuters are advised to use alternate routes.\n\n— Bengaluru Traffic Police / BBMP`;
 
   return { kn, en };
 }
@@ -211,7 +211,6 @@ export default function BroadcastPage() {
           <div className="card border-l-4 border-l-primary-500 dark:border-l-primary-400 space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="text-lg">🇮🇳</span>
                 <h3 className="text-sm font-bold text-ink dark:text-slate-100">ಕನ್ನಡ ಪ್ರಸಾರ</h3>
                 <span className="badge bg-orange-50 text-orange-700 dark:bg-orange-950/30 dark:text-orange-400 text-[10px]">Kannada</span>
               </div>
@@ -232,7 +231,6 @@ export default function BroadcastPage() {
           <div className="card border-l-4 border-l-slate-400 dark:border-l-slate-600 space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="text-lg">🇬🇧</span>
                 <h3 className="text-sm font-bold text-ink dark:text-slate-100">English Translation</h3>
                 <span className="badge bg-blue-50 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400 text-[10px]">Reference</span>
               </div>
@@ -250,7 +248,7 @@ export default function BroadcastPage() {
 
           {/* Usage tips */}
           <div className="card bg-primary-50/50 dark:bg-primary-950/20 border-primary-100/60 dark:border-primary-900/40">
-            <p className="text-xs font-semibold text-primary-700 dark:text-primary-400 mb-2">📋 ಬಳಕೆ ಸಲಹೆಗಳು — Usage Tips</p>
+            <p className="text-xs font-semibold text-primary-700 dark:text-primary-400 mb-2">ಬಳಕೆ ಸಲಹೆಗಳು — Usage Tips</p>
             <ul className="text-xs text-ink-secondary dark:text-slate-400 space-y-1 list-disc list-inside">
               <li>Copy ಕನ್ನಡ text to send as SMS to affected commuters</li>
               <li>Use for PA system announcements at junction control points</li>
