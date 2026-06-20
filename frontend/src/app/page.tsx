@@ -205,7 +205,7 @@ function MetricCard({ icon: Icon, value, label, color, delta }: any) {
     violet: 'text-violet-500 bg-violet-500/10',
   };
   return (
-    <div className={`bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-card border border-surface-border/60 dark:border-slate-800/60 border-l-4 ${borders[color] || borders.primary} p-5 shadow-card relative overflow-hidden transition-all duration-300 hover:-translate-y-0.5 ${glows[color] || glows.primary}`}>
+    <div className={`bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-card border border-surface-border border-opacity-60 dark:border-slate-800/60 border-l-4 ${borders[color] || borders.primary} p-5 shadow-card relative overflow-hidden transition-all duration-300 hover:-translate-y-0.5 ${glows[color] || glows.primary}`}>
       <div className="flex items-start justify-between">
         <div className="min-w-0">
           <p className="metric-value text-2xl font-bold tracking-tight text-ink dark:text-slate-50">{value}</p>
@@ -227,7 +227,7 @@ function MetricBadge({ label, value, color }: { label: string; value: string; co
     amber: 'text-amber-600 bg-amber-50 dark:text-amber-400 dark:bg-amber-950/20',
   };
   return (
-    <div className="rounded-xl bg-surface-subtle dark:bg-slate-950/40 p-4 text-center border border-surface-border/40 dark:border-slate-800/40">
+    <div className="rounded-xl bg-surface-subtle dark:bg-slate-950/40 p-4 text-center border border-surface-border border-opacity-40 dark:border-slate-800/40">
       <p className={`text-2xl font-bold ${colors[color]?.split(' ')[0] || 'text-ink dark:text-slate-50'}`}>{value}</p>
       <p className="text-xs text-ink-secondary dark:text-slate-400 mt-1">{label}</p>
     </div>

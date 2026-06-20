@@ -19,11 +19,31 @@ body {
     --tooltip-bg: #ffffff;
     --tooltip-border: #E7E2DC;
     --tooltip-text: #1C1917;
+
+    --color-ink: #1C1917;
+    --color-ink-secondary: #78716C;
+    --color-ink-muted: #A8A29E;
+
+    --color-surface-card: #FFFFFF;
+    --color-surface-sidebar: #F5F8FF;
+    --color-surface-hover: #E8EFFA;
+    --color-surface-subtle: #F8FAFF;
+    --color-surface-border: #D9E4F0;
   }
   .dark {
     --tooltip-bg: #0f172a;
     --tooltip-border: #1e293b;
     --tooltip-text: #f1f5f9;
+
+    --color-ink: #f8fafc;
+    --color-ink-secondary: #cbd5e1;
+    --color-ink-muted: #94a3b8;
+
+    --color-surface-card: #0f172a;
+    --color-surface-sidebar: #090d16;
+    --color-surface-hover: #1e293b;
+    --color-surface-subtle: #1e293b;
+    --color-surface-border: #1e293b;
   }
   * { @apply border-surface-border dark:border-slate-800/80; }
   body { @apply bg-surface text-ink antialiased transition-colors duration-200 dark:bg-slate-950 dark:text-slate-100; }
@@ -31,19 +51,19 @@ body {
 
 @layer components {
   .card {
-    @apply bg-surface-card rounded-card border border-surface-border/60 shadow-card p-5
+    @apply bg-surface-card rounded-card border border-surface-border border-opacity-60 shadow-card p-5
            transition-all duration-200
            dark:bg-slate-900 dark:border-slate-800/80 dark:shadow-none;
   }
   .card-hover {
-    @apply card cursor-pointer hover:shadow-card-hover hover:border-surface-border/80
+    @apply card cursor-pointer hover:shadow-card-hover hover:border-surface-border hover:border-opacity-80
            dark:hover:bg-slate-800 dark:hover:border-slate-700/80;
   }
   .card-elevated {
     @apply card shadow-card-lg dark:shadow-none;
   }
   .card-blank {
-    @apply rounded-card border border-dashed border-surface-border/50 p-5
+    @apply rounded-card border border-dashed border-surface-border border-opacity-50 p-5
            dark:border-slate-800/80;
   }
 
@@ -124,7 +144,7 @@ body {
   }
 
   .table-wrap {
-    @apply rounded-card border border-surface-border/60 bg-surface-card shadow-card overflow-hidden
+    @apply rounded-card border border-surface-border border-opacity-60 bg-surface-card shadow-card overflow-hidden
            dark:border-slate-800 dark:bg-slate-900 dark:shadow-none;
   }
   .table-wrap table {
@@ -136,13 +156,13 @@ body {
            dark:bg-slate-950/40 dark:border-slate-800 dark:text-slate-400;
   }
   .table-wrap tbody td {
-    @apply px-5 py-3.5 border-b border-surface-border/40 dark:border-slate-800/40;
+    @apply px-5 py-3.5 border-b border-surface-border border-opacity-40 dark:border-slate-800/40;
   }
   .table-wrap tbody tr:last-child td {
     @apply border-b-0;
   }
   .table-wrap tbody tr {
-    @apply transition-colors hover:bg-surface-hover/50 dark:hover:bg-slate-800/30;
+    @apply transition-colors hover:bg-surface-hover dark:hover:bg-slate-800/30;
   }
 
   .chart-tooltip {

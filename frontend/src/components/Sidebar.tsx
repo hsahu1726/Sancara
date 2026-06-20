@@ -6,19 +6,24 @@ import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard, Radar, MapPin, AlertTriangle, Search,
   Crosshair, ClipboardList, ChevronLeft, ChevronRight, Menu, X,
-  Map, MessageSquare, Sun, Moon
+  Map, MessageSquare, Sun, Moon, Radio, Globe, Calendar, Sliders, CalendarDays
 } from 'lucide-react';
 
 const links = [
-  { href: '/', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/predict', label: 'Prediction', icon: Radar },
-  { href: '/hotspots', label: 'Hotspots', icon: MapPin },
-  { href: '/vulnerability', label: 'Vulnerability', icon: AlertTriangle },
-  { href: '/similarity', label: 'Similarity', icon: Search },
-  { href: '/autopsy', label: 'Response Replay', icon: Crosshair },
-  { href: '/corridors', label: 'Corridor Routes', icon: Map },
-  { href: '/chatbot', label: 'AI Chatbot', icon: MessageSquare },
-  { href: '/resources', label: 'Resources', icon: ClipboardList },
+  { href: '/',           label: 'Dashboard',        icon: LayoutDashboard },
+  { href: '/predict',    label: 'Prediction',        icon: Radar },
+  { href: '/hotspots',   label: 'Hotspots',          icon: MapPin },
+  { href: '/heatmap',    label: 'Hotspot Map',        icon: Globe },
+  { href: '/vulnerability', label: 'Vulnerability',  icon: AlertTriangle },
+  { href: '/similarity', label: 'Similarity',        icon: Search },
+  { href: '/autopsy',    label: 'Response Replay',   icon: Crosshair },
+  { href: '/corridors',  label: 'Corridor Routes',   icon: Map },
+  { href: '/planned',    label: 'Planned Events',    icon: Calendar },
+  { href: '/simulator',  label: 'What-If Simulator', icon: Sliders },
+  { href: '/calendar',   label: 'Risk Calendar',     icon: CalendarDays },
+  { href: '/broadcast',  label: 'ಕನ್ನಡ Broadcast',   icon: Radio },
+  { href: '/chatbot',    label: 'AI Chatbot',        icon: MessageSquare },
+  { href: '/resources',  label: 'Resources',         icon: ClipboardList },
 ];
 
 export default function Sidebar() {

@@ -384,6 +384,56 @@ def get_resources(input_data: ResourceInput):
     }
 
 
+@app.get("/api/events/geo")
+def get_events_geo(limit: int = 2000):
+    c = _load_all()
+    df = c['df']
+    df_feat = c['df_feat']
+    merged = df[['id','latitude','longitude','event_cause','start_datetime','junction','corridor','zone']].copy()
+    merged['impact_level'] = df_feat['impact_level'].values
+    merged = merged.dropna(subset=['latitude','longitude'])
+    merged = merged[(merged['latitude'] != 0) & (merged['longitude'] != 0)]
+    subset = merged.head(limit)
+    events = []
+    for _, row in subset.iterrows():
+        events.append({
+            'id': str(row.get('id', '')),
+            'latitude': float(row['latitude']),
+            'longitude': float(row['longitude']),
+            'event_cause': str(row.get('event_cause', '')),
+            'start_datetime': str(row.get('start_datetime', '')),
+            'junction': str(row.get('junction', '')),
+            'corridor': str(row.get('corridor', '')),
+            'zone': str(row.get('zone', '')),
+            'impact_level': int(row.get('impact_level', 1)),
+        })
+    return {'events': events}
+
+
+@app.get("/api/planned")
+def get_planned():
+    c = _load_all()
+    df = c['df']
+    df_feat = c['df_feat']
+    planned = df[df['event_type'] == 'planned'].copy()
+    planned['impact_level'] = df_feat.loc[df_feat['event_type'] == 'planned', 'impact_level'].values if len(planned) > 0 else []
+    dates = pd.to_datetime(planned['start_datetime'], utc=True, errors='coerce')
+    planned['hour'] = dates.dt.hour
+    by_cause = planned['event_cause'].value_counts().to_dict()
+    by_corridor = planned['corridor'].value_counts().head(12).to_dict()
+    by_hour = {str(k): int(v) for k, v in planned['hour'].value_counts().sort_index().items()}
+    by_zone = planned['zone'].value_counts().head(8).to_dict()
+    by_junction = planned['junction'].value_counts().head(10).to_dict()
+    return {
+        'total': len(planned),
+        'by_cause': by_cause,
+        'by_corridor': by_corridor,
+        'by_hour': by_hour,
+        'by_zone': by_zone,
+        'by_junction': by_junction,
+    }
+
+
 if __name__ == '__main__':
     import uvicorn
     uvicorn.run(app, host='0.0.0.0', port=8000)

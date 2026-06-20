@@ -295,7 +295,7 @@ function ResultCard({ icon: Icon, value, label, color, delta }: any) {
 
 function MiniCard({ icon: Icon, value, label }: any) {
   return (
-    <div className="bg-surface-subtle dark:bg-slate-950/40 rounded-xl p-3.5 text-center border border-surface-border/40 dark:border-slate-800/40">
+    <div className="bg-surface-subtle dark:bg-slate-950/40 rounded-xl p-3.5 text-center border border-surface-border border-opacity-40 dark:border-slate-800/40">
       <Icon size={16} className="mx-auto mb-1.5 text-ink-muted dark:text-slate-400" />
       <p className="text-sm font-semibold text-ink dark:text-slate-200">{value}</p>
       <p className="text-[10px] text-ink-muted dark:text-slate-400">{label}</p>

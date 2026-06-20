@@ -34,4 +34,9 @@ export const api = {
     fetchJSON<AutopsyResponse>('/api/autopsy', { method: 'POST', body: JSON.stringify({ event_id: eventId }) }),
   getResources: (data: ResourceInput) =>
     fetchJSON<ResourceResponse>('/api/resources', { method: 'POST', body: JSON.stringify(data) }),
+  getEventsGeo: (limit = 2000) =>
+    fetchJSON<{ events: any[] }>(`/api/events/geo?limit=${limit}`),
+  getPlanned: () =>
+    fetchJSON<any>('/api/planned'),
 };
+

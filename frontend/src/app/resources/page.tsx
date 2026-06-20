@@ -198,7 +198,7 @@ export default function ResourcesPage() {
 
 function ResourceBox({ icon: Icon, value, label, color }: any) {
   return (
-    <div className="bg-surface-subtle dark:bg-slate-950/40 rounded-xl p-4 text-center border border-surface-border/40 dark:border-slate-800/40">
+    <div className="bg-surface-subtle dark:bg-slate-950/40 rounded-xl p-4 text-center border border-surface-border border-opacity-40 dark:border-slate-800/40">
       <Icon size={18} className="mx-auto mb-1.5" style={{ color }} />
       <p className="text-lg font-bold text-ink dark:text-slate-100">{value}</p>
       <p className="text-[10px] text-ink-muted dark:text-slate-400 mt-0.5">{label}</p>
