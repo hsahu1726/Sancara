@@ -48,11 +48,14 @@ export default function Sidebar() {
             <X size={20} className="text-ink-secondary" />
           </button>
         )}
-        <div className="w-9 h-9 rounded-full overflow-hidden shrink-0 shadow-sm">
-          <img src="/logo.png" alt="Sañcāra logo" className="w-full h-full object-cover" />
-        </div>
-        {!collapsed && (
-          <span className="text-base font-bold text-ink tracking-tight select-none">Sañcāra</span>
+        {collapsed ? (
+          <div className="w-9 h-9 rounded-full overflow-hidden shrink-0 shadow-sm">
+            <img src="/logo.png" alt="Sañcāra logo" className="w-full h-full object-cover" />
+          </div>
+        ) : (
+          <div className="h-10 overflow-hidden shrink-0">
+            <img src="/wordmark.png" alt="Sañcāra" className="h-full object-contain" />
+          </div>
         )}
       </div>
 
