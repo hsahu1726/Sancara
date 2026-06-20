@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef, useMemo } from 'react';
 import { api } from '@/lib/api';
-import { Layers, Info } from 'lucide-react';
+import { Layers } from 'lucide-react';
 
 const CAUSE_COLORS: Record<string, string> = {
   vehicle_breakdown: '#3B82F6',
@@ -176,16 +176,6 @@ export default function HeatmapPage() {
             </div>
           </div>
 
-          <div className="card bg-surface-subtle dark:bg-slate-900/40 space-y-2">
-            <p className="text-xs font-bold text-ink-muted dark:text-slate-400 flex items-center gap-1.5">
-              <Info size={12} /> How to Read
-            </p>
-            <ul className="text-[11px] text-ink-muted dark:text-slate-500 space-y-1 list-disc list-inside leading-relaxed">
-              <li>Colored dots = individual ASTRAM events</li>
-              <li>Filter by clicking causes in the legend or using the dropdown</li>
-              <li>Click any dot to view junction, corridor, and event type</li>
-            </ul>
-          </div>
         </div>
       </div>
     </div>
