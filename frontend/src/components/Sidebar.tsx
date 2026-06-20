@@ -112,21 +112,8 @@ export default function Sidebar() {
       {/* Footer controls */}
       <div className="p-2.5 border-t border-surface-border">
         <button
-          onClick={() => {
-            localStorage.setItem('sancara_tour_active', 'true');
-            localStorage.setItem('sancara_tour_completed', 'false');
-            localStorage.setItem('sancara_tour_step', '0');
-            window.dispatchEvent(new Event('sancara_start_tour'));
-          }}
-          className="sidebar-link w-full flex items-center gap-3 text-primary-600 dark:text-primary-400 font-semibold"
-          title={collapsed ? "Take a Tour" : undefined}
-        >
-          <Compass size={18} className="shrink-0" />
-          {!collapsed && <span className="truncate">Take a Tour</span>}
-        </button>
-        <button
           onClick={() => setCollapsed(!collapsed)}
-          className="sidebar-link w-full hidden lg:flex items-center gap-3 mt-1"
+          className="sidebar-link w-full hidden lg:flex items-center gap-3"
         >
           {collapsed ? <ChevronRight size={18} className="shrink-0" /> : <ChevronLeft size={18} className="shrink-0" />}
           {!collapsed && <span className="truncate">Collapse</span>}

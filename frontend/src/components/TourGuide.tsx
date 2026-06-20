@@ -242,6 +242,18 @@ export default function TourGuide() {
 
   return (
     <>
+      {/* Floating Tour Button */}
+      {!active && !showWelcome && (
+        <button
+          onClick={startTour}
+          className="fixed top-4 right-4 z-50 px-4 py-2 rounded-full bg-primary-600 hover:bg-primary-700 text-white shadow-lg transition-all duration-300 hover:scale-105 flex items-center gap-2 text-xs font-semibold"
+          title="Take a Tour"
+        >
+          <Compass size={16} />
+          <span>Take a Tour</span>
+        </button>
+      )}
+
       {/* Welcome Modal Overlay */}
       {showWelcome && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm animate-fade-in p-4">
