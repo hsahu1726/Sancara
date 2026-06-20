@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef, useMemo } from 'react';
-import { api } from '@/lib/api';
+import { api, formatJunctionName } from '@/lib/api';
 import { Layers } from 'lucide-react';
 
 const CAUSE_COLORS: Record<string, string> = {
@@ -124,8 +124,9 @@ export default function HeatmapPage() {
       const junc = (ev.junction && ev.junction.toLowerCase() !== 'nan' && ev.junction.toLowerCase() !== 'null') ? ev.junction : '';
       const corr = (ev.corridor && ev.corridor.toLowerCase() !== 'nan' && ev.corridor.toLowerCase() !== 'null') ? ev.corridor : '';
 
-      const locationText = junc
-        ? (corr ? `${junc} (${corr})` : junc)
+      const formattedJunc = formatJunctionName(junc);
+      const locationText = formattedJunc && formattedJunc !== '—'
+        ? (corr ? `${formattedJunc} (${corr})` : formattedJunc)
         : (corr || 'Unknown Location');
 
       circle.bindPopup(`

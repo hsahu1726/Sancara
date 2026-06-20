@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { api } from '@/lib/api';
+import { api, formatJunctionName } from '@/lib/api';
 import type { AutopsyEvent, AutopsyResponse } from '@/types';
 import { Crosshair, Clock, Shield, AlertTriangle, Play, Zap } from 'lucide-react';
 
@@ -37,7 +37,9 @@ export default function AutopsyPage() {
   return (
     <div className="space-y-7 animate-fade-in">
       <div className="page-header">
-        <h1 className="page-title">Response Replay</h1>
+        <h1 className="page-title flex items-center gap-2">
+          Response Replay <span className="text-[10px] font-normal text-ink-muted border border-surface-border dark:border-slate-800 rounded px-1.5 py-0.5">Counterfactual Simulator</span>
+        </h1>
         <p className="page-desc">Find the exact decision window where intervention could have prevented escalation</p>
       </div>
 
@@ -48,7 +50,7 @@ export default function AutopsyPage() {
           <select className="select-field" value={selectedId} onChange={e => { setSelectedId(e.target.value); setResult(null); }}>
             {events.map(e => (
               <option key={e.id} value={e.id}>
-                [{e.id}] {e.event_cause} @ {e.junction || '?'} ({e.resolution_minutes.toFixed(0)} min)
+                [{e.id}] {e.event_cause.replace(/_/g, ' ')} @ {formatJunctionName(e.junction || '?')} ({e.resolution_minutes.toFixed(0)} min)
               </option>
             ))}
           </select>
@@ -72,8 +74,8 @@ export default function AutopsyPage() {
             <div className="flex items-center gap-3">
               <div className="w-3 h-3 rounded-full shrink-0" style={{ background: getStatusColor(result.event.impact_label) }} />
               <div>
-                <h3 className="text-sm font-semibold text-ink capitalize">{result.event.event_cause}</h3>
-                <p className="text-xs text-ink-secondary">{result.event.junction || 'N/A'} · {result.event.priority} priority</p>
+                <h3 className="text-sm font-semibold text-ink capitalize">{result.event.event_cause.replace(/_/g, ' ')}</h3>
+                <p className="text-xs text-ink-secondary">{formatJunctionName(result.event.junction || 'N/A')} · {result.event.priority} priority</p>
               </div>
               <span className="ml-auto text-xs text-ink-muted">
                 Resolution: {result.event.resolution_minutes.toFixed(0)} min · {result.event.impact_label}

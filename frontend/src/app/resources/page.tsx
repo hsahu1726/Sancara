@@ -178,14 +178,14 @@ export default function ResourcesPage() {
                 </div>
               </div>
 
-              <div className="card text-xs text-ink-muted dark:text-slate-400 leading-relaxed">
-                <p className="font-medium text-ink-secondary dark:text-slate-300 mb-1">How resources are calculated:</p>
-                <ul className="list-disc list-inside space-y-0.5">
-                  <li>Base resources determined by impact level (Low → 2 officers, Critical → 15+ officers)</li>
-                  <li>Event cause modifiers adjust officer/barricade counts (e.g., public events +30%)</li>
-                  <li>Peak hours (8-10 AM, 5-8 PM) increase requirements by 20%</li>
-                  <li>Road closure increases barricade needs by 50%</li>
-                  <li>Major corridors add 10% to resource requirements</li>
+              <div className="card text-xs text-ink-muted dark:text-slate-400 leading-relaxed space-y-2">
+                <p className="font-semibold text-ink-secondary dark:text-slate-300">Resource Planning Derivation Methodology:</p>
+                <ul className="list-disc list-inside space-y-1">
+                  <li><strong>Impact Level:</strong> Predicted using an XGBoost Classifier trained on the ASTRAM dataset, mapping the incident features to standard severity categories.</li>
+                  <li><strong>Base Resources:</strong> Mapped from the severity category (Low: 2 officers/2 barricades, Medium: 5/6, High: 10/14, Critical: 15/20).</li>
+                  <li><strong>Event Cause Modifiers:</strong> Multiplies base counts depending on the cause (e.g., construction increases barricades by 1.8x, VIP movement increases officers by 1.5x, public events increase officers by 1.3x).</li>
+                  <li><strong>Peak Hours:</strong> 8-10 AM and 5-8 PM peak periods apply a 1.2x multiplier to officer requirements and a 1.15x multiplier to barricades.</li>
+                  <li><strong>Road Closures & Corridors:</strong> Road closure adds a 1.5x barricade multiplier (forcing diversion to Required); major corridors add a 1.1x multiplier.</li>
                 </ul>
               </div>
             </>

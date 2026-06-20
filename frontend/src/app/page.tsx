@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { api } from '@/lib/api';
+import { api, formatJunctionName } from '@/lib/api';
 import type { DashboardStats } from '@/types';
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
@@ -63,7 +63,7 @@ export default function Dashboard() {
         />
         <MetricCard
           icon={MapPin}
-          value={stats.top_junction}
+          value={formatJunctionName(stats.top_junction)}
           label="Most Vulnerable"
           color="violet"
           delta={`${stats.junctions_count} junctions`}

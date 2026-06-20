@@ -5,6 +5,7 @@ import {
   Tooltip, ResponsiveContainer, Legend,
 } from 'recharts';
 import { Calendar, Construction, Megaphone, Users, Shield, Flag } from 'lucide-react';
+import { formatJunctionName } from '@/lib/api';
 
 // ── Real data pre-aggregated from ASTRAM dataset.csv ─────────────────────────
 const TOTAL_PLANNED = 467;
@@ -228,7 +229,7 @@ export default function PlannedPage() {
                 {TOP_JUNCTIONS.map((j, i) => (
                   <tr key={j.junction}>
                     <td className="text-ink-muted dark:text-slate-500 font-mono text-xs">{i + 1}</td>
-                    <td className="text-ink dark:text-slate-200 text-xs font-medium">{j.junction}</td>
+                    <td className="text-ink dark:text-slate-200 text-xs font-medium">{formatJunctionName(j.junction)}</td>
                     <td className="text-right">
                       <span className="badge bg-orange-50 text-orange-700 dark:bg-orange-950/30 dark:text-orange-400">{j.count}</span>
                     </td>

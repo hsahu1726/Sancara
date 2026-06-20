@@ -65,28 +65,35 @@ export default function Sidebar() {
   const sidebarContent = (
     <>
       {/* Logo */}
-      <div className="flex items-center justify-between px-4 h-16 border-b border-surface-border shrink-0">
-        <div className="flex items-center gap-3 overflow-hidden">
-          {!collapsed && (
-            <button onClick={() => setMobileOpen(false)} className="lg:hidden mr-1 p-1 -ml-1 rounded-lg hover:bg-surface-hover">
-              <X size={20} className="text-ink-secondary" />
-            </button>
-          )}
-          <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 shadow-sm">
-            <img src="/wordmark.png" alt="San̄cāra logo" className="w-full h-full object-cover" />
+      <div className="flex flex-col px-4 pt-4 pb-3 border-b border-surface-border shrink-0 gap-2">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3 overflow-hidden">
+            {!collapsed && (
+              <button onClick={() => setMobileOpen(false)} className="lg:hidden mr-1 p-1 -ml-1 rounded-lg hover:bg-surface-hover">
+                <X size={20} className="text-ink-secondary" />
+              </button>
+            )}
+            <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 shadow-sm">
+              <img src="/wordmark.png" alt="San̄cāra logo" className="w-full h-full object-cover" />
+            </div>
+            {!collapsed && (
+              <span className="text-lg font-bold text-ink tracking-tight select-none">San̄cāra</span>
+            )}
           </div>
           {!collapsed && (
-            <span className="text-lg font-bold text-ink tracking-tight select-none">San̄cāra</span>
+            <button
+              onClick={toggleTheme}
+              className="p-1.5 rounded-lg hover:bg-surface-hover text-ink-secondary dark:text-slate-400 transition-colors shrink-0"
+              title={theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+            >
+              {theme === 'dark' ? <Sun size={18} className="text-amber-500" /> : <Moon size={18} />}
+            </button>
           )}
         </div>
         {!collapsed && (
-          <button
-            onClick={toggleTheme}
-            className="p-1.5 rounded-lg hover:bg-surface-hover text-ink-secondary dark:text-slate-400 transition-colors shrink-0"
-            title={theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
-          >
-            {theme === 'dark' ? <Sun size={18} className="text-amber-500" /> : <Moon size={18} />}
-          </button>
+          <div className="inline-flex items-center justify-center px-2 py-0.5 rounded-md bg-primary-50 dark:bg-primary-950/30 border border-primary-200 dark:border-primary-900/50 text-[10px] font-semibold text-primary-700 dark:text-primary-400 text-center select-none">
+            ASTRAM 2023–24 Historical Dataset
+          </div>
         )}
       </div>
 

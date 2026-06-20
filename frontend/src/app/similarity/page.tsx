@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { api } from '@/lib/api';
+import { api, formatJunctionName } from '@/lib/api';
 import type { SimilarEvent, SimilarityInput } from '@/types';
 import { Search, ArrowRight, Clock, Shield } from 'lucide-react';
 
@@ -152,7 +152,7 @@ function SimilarEventCard({ event, rank }: { event: SimilarEvent; rank: number }
           </span>
         </div>
         <p className="text-xs text-ink-secondary dark:text-slate-400 mt-1">
-          {event.corridor} · {event.zone} · {event.junction && event.junction !== 'unknown' ? event.junction : '—'}
+          {event.corridor} · {event.zone} · {event.junction && event.junction !== 'unknown' ? formatJunctionName(event.junction) : '—'}
         </p>
         <div className="flex items-center gap-4 mt-2 text-xs text-ink-muted dark:text-slate-500">
           <span className="flex items-center gap-1"><Clock size={12} /> {event.resolution_minutes} min</span>

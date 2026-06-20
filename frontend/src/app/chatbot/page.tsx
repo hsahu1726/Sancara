@@ -155,6 +155,7 @@ export default function ChatbotPage() {
       <div className="page-header border-b border-surface-border pb-4 shrink-0">
         <h1 className="page-title flex items-center gap-2">
           <Sparkles size={20} className="text-primary-500" /> Sañcāra Copilot
+          <span className="text-[10px] font-normal text-ink-muted border border-surface-border dark:border-slate-800 rounded px-1.5 py-0.5">Simulated Copilot Preview</span>
         </h1>
         <p className="page-desc">AI-powered incident command assistant and response loop drafting engine</p>
       </div>
@@ -182,7 +183,7 @@ export default function ChatbotPage() {
             <div className="flex items-start gap-2.5 bg-primary-50/70 dark:bg-primary-950/20 border border-primary-100 dark:border-primary-900/40 rounded-xl p-3.5">
               <Info size={16} className="text-primary-600 dark:text-primary-400 shrink-0 mt-0.5" />
               <p className="text-[11px] text-primary-700 dark:text-primary-300 leading-normal">
-                Sañcāra Copilot drafts immediate response loops by cross-referencing real-time incident parameters with historical patterns.
+                <strong>Simulated Preview:</strong> Copilot answers are simulated pre-programmed response templates demonstrating domain-specific integration paths.
               </p>
             </div>
           </div>

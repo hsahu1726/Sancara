@@ -209,7 +209,7 @@ export default function PredictPage() {
 
               <div className="card space-y-4">
                 <h3 className="text-sm font-semibold flex items-center gap-2">
-                  <Radio size={16} className="text-primary-500 animate-pulse" /> Communications Protocol Dispatch
+                  <Radio size={16} className="text-primary-500 animate-pulse" /> Communications Protocol Dispatch <span className="text-[10px] font-normal text-ink-muted border border-surface-border dark:border-slate-850 rounded px-1.5 py-0.5">Simulated Preview</span>
                 </h3>
                 <p className="text-xs text-ink-secondary leading-relaxed">Broadcast warnings, alerts, and detour paths to emergency channels and public APIs.</p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -224,7 +224,7 @@ export default function PredictPage() {
                     }`}
                   >
                     {commActions['whatsapp'] === 'success' ? <Check size={14} /> : <MessageSquare size={14} />}
-                    {commActions['whatsapp'] === 'success' ? 'WhatsApp Sent' : 'Broadcast to WhatsApp'}
+                    {commActions['whatsapp'] === 'success' ? 'WhatsApp Sent' : 'Broadcast to WhatsApp (Simulated)'}
                   </button>
 
                   <button
@@ -238,7 +238,7 @@ export default function PredictPage() {
                     }`}
                   >
                     {commActions['sms'] === 'success' ? <Check size={14} /> : <Send size={14} />}
-                    {commActions['sms'] === 'success' ? 'SMS Broadcasted' : 'Trigger SMS Warning'}
+                    {commActions['sms'] === 'success' ? 'SMS Broadcasted' : 'Trigger SMS Warning (Simulated)'}
                   </button>
 
                   <button
@@ -252,7 +252,7 @@ export default function PredictPage() {
                     }`}
                   >
                     {commActions['vms'] === 'success' ? <Check size={14} /> : <Radio size={14} />}
-                    {commActions['vms'] === 'success' ? 'VMS Signs Updated' : 'Update VMS Displays'}
+                    {commActions['vms'] === 'success' ? 'VMS Signs Updated' : 'Update VMS Displays (Simulated)'}
                   </button>
                 </div>
               </div>
@@ -271,6 +271,22 @@ export default function PredictPage() {
                     </Bar>
                   </BarChart>
                 </ResponsiveContainer>
+              </div>
+
+              <div className="card text-xs text-ink-muted dark:text-slate-400 leading-relaxed space-y-2">
+                <p className="font-semibold text-ink-secondary dark:text-slate-300">ML Prediction & Resource Derivation Methodology:</p>
+                <ul className="list-disc list-inside space-y-1">
+                  <li><strong>Impact Level & Resolution Time:</strong> Predicted using XGBoost classification and AFT (Accelerated Failure Time) regression models trained on 8,173 historical ASTRAM events.</li>
+                  <li><strong>Cascade Risk:</strong> Computed via a calibrated classifier assessing probability of incident duration exceeding the 90th percentile of similar historical incidents.</li>
+                  <li><strong>Resource Recommendation:</strong> Base requirements (Low: 2 officers/2 barricades, Medium: 5/6, High: 10/14, Critical: 15/20) are adjusted dynamically:
+                    <ul className="list-disc list-inside pl-4 mt-0.5 space-y-0.5 opacity-90">
+                      <li>Cause Multipliers: public events (+30% officers), VIP movement (+50% officers), accidents (+40% officers).</li>
+                      <li>Peak Hours (8-10 AM, 5-8 PM): +20% officer demand.</li>
+                      <li>Corridors: +10% resources to handle high-volume thoroughfares.</li>
+                      <li>Weather Overrides: Light rain adds 35% delay; Heavy rain raises impact level by 1 grade, adds 85% delay, +3 officers, and +6 barricades.</li>
+                    </ul>
+                  </li>
+                </ul>
               </div>
             </>
           )}

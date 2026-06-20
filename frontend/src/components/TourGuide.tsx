@@ -31,64 +31,10 @@ const TOUR_STEPS: TourStep[] = [
     instruction: 'Click on any color-coded coordinate dot to view location and event cause details.',
   },
   {
-    path: '/vulnerability',
-    title: 'Junction Vulnerability Index',
-    desc: 'Highlights critical junctions ranked by historical incident counts, average delays, and road closures.',
-    instruction: 'Use the search bar to find vulnerable junctions and analyze their relative risk scores.',
-  },
-  {
-    path: '/similarity',
-    title: 'Historical Case Search',
-    desc: 'Finds similar past incidents in the ASTRAM dataset using Cosine Similarity matching across features.',
-    instruction: 'Input details of a new event to find the top 5 most similar historical matches.',
-  },
-  {
-    path: '/autopsy',
-    title: 'Response Replay & Autopsy',
-    desc: 'Performs autopsy analysis on past events to determine counterfactual point-of-no-return and response efficacy.',
-    instruction: 'Select a resolved event and run Autopsy to inspect timelines and identify potential delay savings.',
-  },
-  {
-    path: '/corridors',
-    title: 'Corridor Analysis',
-    desc: 'Visualizes major Bengaluru corridors and lists their active congestion levels and junction nodes.',
-    instruction: 'Select a corridor in the panel to highlight its route and view active events.',
-  },
-  {
-    path: '/planned',
-    title: 'Planned Event Analysis',
-    desc: 'Details the 467 planned events (construction, VIP movement, protests, processions) from the ASTRAM dataset.',
-    instruction: 'Hover over the charts to view scheduling hour distributions and top affected junctions.',
-  },
-  {
     path: '/simulator',
     title: 'What-If Scenario Simulator',
     desc: 'Compares two event configurations side-by-side using the ASTRAM-trained ML model.',
     instruction: 'Set a base and what-if scenario, click Run Simulation to contrast severity and cascade probability.',
-  },
-  {
-    path: '/calendar',
-    title: 'Historical Risk Calendar',
-    desc: 'A daily heatmap grid of ASTRAM events across November 2023 – April 2024.',
-    instruction: 'Navigate through months and click any day to inspect daily event statistics and anomalies.',
-  },
-  {
-    path: '/broadcast',
-    title: 'ಕನ್ನಡ Public Broadcast Generator',
-    desc: 'Generates public traffic advisories in Kannada and English reference translations.',
-    instruction: 'Click Generate ಕನ್ನಡ Broadcast to construct announcement texts, then click Copy to share.',
-  },
-  {
-    path: '/chatbot',
-    title: 'AI Chatbot',
-    desc: 'Interactive assistant powered by ASTRAM domain context to answer traffic queries and suggest strategies.',
-    instruction: 'Type your query or click on one of the quick suggestions to chat with the assistant.',
-  },
-  {
-    path: '/resources',
-    title: 'Resource Allocator',
-    desc: 'Recommends traffic officers, barricades, and diversion plans based on event priority and road closures.',
-    instruction: 'Adjust the input controls to receive operational resource recommendations.',
   },
 ];
 
