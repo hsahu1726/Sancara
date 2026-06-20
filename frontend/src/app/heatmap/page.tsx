@@ -97,10 +97,12 @@ export default function HeatmapPage() {
         fillOpacity: 0.75,
       }).addTo(map);
 
-      // Popup shows location/Junction/Corridor and then type of event (no descriptions, location text is larger)
-      const locationText = ev.junction
-        ? (ev.corridor ? `${ev.junction} (${ev.corridor})` : ev.junction)
-        : (ev.corridor || 'Unknown Location');
+      const junc = (ev.junction && ev.junction.toLowerCase() !== 'nan' && ev.junction.toLowerCase() !== 'null') ? ev.junction : '';
+      const corr = (ev.corridor && ev.corridor.toLowerCase() !== 'nan' && ev.corridor.toLowerCase() !== 'null') ? ev.corridor : '';
+
+      const locationText = junc
+        ? (corr ? `${junc} (${corr})` : junc)
+        : (corr || 'Unknown Location');
 
       circle.bindPopup(`
         <div style="font-family:Inter,sans-serif;min-width:160px;padding:2px">
