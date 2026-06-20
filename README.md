@@ -4,14 +4,9 @@
   <img src="assets/logo.png" width="400" alt="Sañcāra Logo"/>
 </p>
 
-<p align="center">
-  <strong>Operational Intelligence for Urban Traffic Networks</strong><br/>
-  Flipkart GRID Hackathon &nbsp;|&nbsp; Theme 2: Event-Driven Congestion
-</p>
-
 ---
 
-## 2. Introduction
+## Sañcāra
 
 **Sañcāra** is an AI-powered urban mobility operations platform designed for traffic management centers. Using network analytics, corridor intelligence, and resource planning models trained on **8,173 historical Bengaluru traffic events**, it helps operators anticipate disruption, plan diversion routes, and optimize field deployments to restore mobility faster.
 
@@ -19,7 +14,7 @@
 
 ---
 
-## 3. System Architecture
+## System Architecture
 
 Sañcāra uses a decoupled client-server architecture. The Next.js client interacts with the FastAPI backend via REST API endpoints.
 
@@ -92,7 +87,7 @@ frontend/                  Next.js Web Application
 
 ---
 
-## 4. Operational Data Flowchart
+## Operational Data Flowchart
 
 ```mermaid
 graph TD
@@ -109,7 +104,7 @@ graph TD
 
 ---
 
-## 5. ML Pipeline
+## ML Pipeline
 
 Sañcāra features clean temporal splitting (Train: Nov 2023 – Mar 2024; Held-out Test: Mar – Apr 2024).
 
@@ -126,7 +121,7 @@ Sañcāra features clean temporal splitting (Train: Nov 2023 – Mar 2024; Held-
 
 ---
 
-## 6. Tech Stack
+## Tech Stack
 
 - **Frontend:** Next.js 14, React 18, Tailwind CSS, Recharts, Leaflet Maps.
 - **Backend API:** FastAPI, Uvicorn, Pydantic.
@@ -134,7 +129,7 @@ Sañcāra features clean temporal splitting (Train: Nov 2023 – Mar 2024; Held-
 
 ---
 
-## 7. Local Development Setup
+## Local Development Setup
 
 ### Backend & Model Training
 Ensure Python 3.10+ is installed.
@@ -158,7 +153,7 @@ npm run dev
 
 ---
 
-## 8. Known Limitations
+## Known Limitations
 
 - **Administrative Resolution Censoring:** A substantial portion of historical resolution records are censored due to administrative delay. We handle this through survival bounds (AFT).
 - **Composite Disruption Metric:** Ground-truth severity labels are absent in ~70% of historical events. Sañcāra resolves this by calculating a composite severity index during training.
@@ -166,7 +161,7 @@ npm run dev
 
 ---
 
-## 9. Future Scope
+## Future Scope
 
 - **Advanced Survival Estimators:** Transitioning from parametric AFT to Kaplan-Meier or Cox Proportional Hazards curves categorized by incident causes.
 - **OSMnx Graph Integration:** Importing full OpenStreetMap road meshes to enable accurate edge-weight routing.
@@ -176,7 +171,7 @@ npm run dev
 
 ---
 
-## 10. Team Members
+## Team Members
 
 - **Harsh Sahu**
 - **Yash Chawla**
