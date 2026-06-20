@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "sancara"
+version = "1.0.0"
+description = "Event Impact Forecasting & Response Intelligence System — Gridlock-Flipkart 2.0 Hackathon"
+authors = ["Gridlock-Flipkart Team"]
+readme = "README.md"
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.14"
+fastapi = ">=0.109.0"
+uvicorn = ">=0.27.0"
+# numpy >= 2.0 is REQUIRED: the committed model pickles were saved with numpy 2.x
+# (they reference `numpy._core`, which does not exist in numpy 1.x). Loading them
+# on numpy 1.x raises ModuleNotFoundError: No module named 'numpy._core' -> 500s.
+numpy = ">=2.0.0"
+# numpy-2-compatible floors (older releases pull numpy 1.x and break the pickles).
+pandas = ">=2.2.0"
+scipy = ">=1.13.0"
+scikit-learn = ">=1.5.0"   # was "<1.5": that cap pulled sklearn 1.4 + numpy 1.x
+xgboost = ">=2.0.0"        # AFT survival training uses the >=2.0 early-stopping API
+networkx = ">=3.0"
+joblib = ">=1.3.0"
+shap = ">=0.46.0"          # not used at runtime; >=0.46 is the first numpy-2-safe line
+python-multipart = ">=0.0.6"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
