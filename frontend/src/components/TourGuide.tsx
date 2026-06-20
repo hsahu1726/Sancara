@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { Compass, X, ChevronRight, ChevronLeft, Check, HelpCircle } from 'lucide-react';
+import { Compass, X, ChevronRight, ChevronLeft, Check } from 'lucide-react';
 
 interface TourStep {
   path: string;
@@ -98,9 +98,65 @@ export default function TourGuide() {
   const [active, setActive] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
   const [showWelcome, setShowWelcome] = useState(false);
+  const [coords, setCoords] = useState<{ top: number; left: number } | null>(null);
+
+  const currentStep = useMemo(() => TOUR_STEPS[stepIndex], [stepIndex]);
+
+  // Handle positioning relative to sidebar elements
+  useEffect(() => {
+    if (!active || !currentStep) {
+      setCoords(null);
+      return;
+    }
+
+    const updatePosition = () => {
+      const linkId = `sidebar-link-${currentStep.path.replace('/', '') || 'dashboard'}`;
+      const element = document.getElementById(linkId);
+
+      if (element && window.innerWidth >= 1024) {
+        const rect = element.getBoundingClientRect();
+        // Position next to the sidebar link
+        setCoords({
+          top: Math.max(16, Math.min(window.innerHeight - 300, rect.top + (rect.height / 2) - 100)),
+          left: rect.right + 16,
+        });
+
+        // Add a temporary highlight class/effect to the link
+        element.classList.add('ring-2', 'ring-primary-500', 'ring-offset-2', 'dark:ring-offset-slate-900');
+      } else {
+        setCoords(null);
+      }
+    };
+
+    updatePosition();
+    window.addEventListener('resize', updatePosition);
+    window.addEventListener('scroll', updatePosition);
+
+    const timer = setTimeout(updatePosition, 200);
+
+    return () => {
+      window.removeEventListener('resize', updatePosition);
+      window.removeEventListener('scroll', updatePosition);
+      clearTimeout(timer);
+
+      // Clean up highlights
+      const linkId = `sidebar-link-${currentStep.path.replace('/', '') || 'dashboard'}`;
+      const element = document.getElementById(linkId);
+      if (element) {
+        element.classList.remove('ring-2', 'ring-primary-500', 'ring-offset-2', 'dark:ring-offset-slate-900');
+      }
+    };
+  }, [active, stepIndex, pathname, currentStep]);
 
   useEffect(() => {
-    // Check if tour is currently active
+    // Listen for custom start tour trigger from Sidebar
+    const handleStartTour = () => {
+      startTour();
+    };
+
+    window.addEventListener('sancara_start_tour', handleStartTour);
+
+    // Initial setup check
     const isTourActive = localStorage.getItem('sancara_tour_active') === 'true';
     const savedStep = localStorage.getItem('sancara_tour_step');
     const isTourCompleted = localStorage.getItem('sancara_tour_completed') === 'true';
@@ -110,19 +166,30 @@ export default function TourGuide() {
       setStepIndex(parsedStep);
       setActive(true);
       
-      // Ensure we are on the correct path for the saved step
       const step = TOUR_STEPS[parsedStep];
       if (step && pathname !== step.path) {
         router.push(step.path);
       }
     } else if (!isTourCompleted && pathname === '/') {
-      // First time user, show welcome card
       setShowWelcome(true);
     }
+
+    return () => {
+      window.removeEventListener('sancara_start_tour', handleStartTour);
+    };
   }, []);
 
-  // Update localStorage when step changes
   const saveStep = (index: number) => {
+    // Clean up highlights of the old step
+    const oldStep = TOUR_STEPS[stepIndex];
+    if (oldStep) {
+      const oldLinkId = `sidebar-link-${oldStep.path.replace('/', '') || 'dashboard'}`;
+      const oldElement = document.getElementById(oldLinkId);
+      if (oldElement) {
+        oldElement.classList.remove('ring-2', 'ring-primary-500', 'ring-offset-2', 'dark:ring-offset-slate-900');
+      }
+    }
+
     setStepIndex(index);
     localStorage.setItem('sancara_tour_step', String(index));
     const step = TOUR_STEPS[index];
@@ -154,6 +221,15 @@ export default function TourGuide() {
   };
 
   const endTour = (completed = false) => {
+    // Clean up current highlights
+    if (currentStep) {
+      const linkId = `sidebar-link-${currentStep.path.replace('/', '') || 'dashboard'}`;
+      const element = document.getElementById(linkId);
+      if (element) {
+        element.classList.remove('ring-2', 'ring-primary-500', 'ring-offset-2', 'dark:ring-offset-slate-900');
+      }
+    }
+
     setActive(false);
     setShowWelcome(false);
     localStorage.setItem('sancara_tour_active', 'false');
@@ -162,25 +238,10 @@ export default function TourGuide() {
     }
   };
 
-  const currentStep = TOUR_STEPS[stepIndex];
   const progressPercent = ((stepIndex + 1) / TOUR_STEPS.length) * 100;
 
   return (
     <>
-      {/* Persistent Help/Tour Trigger Floating Button */}
-      {!active && !showWelcome && (
-        <button
-          onClick={startTour}
-          className="fixed bottom-4 right-4 z-50 p-3 rounded-full bg-primary-500 hover:bg-primary-600 text-white shadow-lg transition-all duration-300 hover:scale-110 flex items-center gap-2 group"
-          title="Start Tour Guide"
-        >
-          <HelpCircle size={20} />
-          <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 ease-out text-xs font-semibold whitespace-nowrap">
-            Take App Tour
-          </span>
-        </button>
-      )}
-
       {/* Welcome Modal Overlay */}
       {showWelcome && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm animate-fade-in p-4">
@@ -189,9 +250,9 @@ export default function TourGuide() {
               <Compass size={24} className="animate-pulse" />
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-bold text-ink dark:text-slate-100">Welcome to Sañcāra!</h3>
+              <h3 className="text-lg font-bold text-ink dark:text-slate-100">Welcome to Sancara</h3>
               <p className="text-xs text-ink-secondary dark:text-slate-300 leading-relaxed">
-                Sañcāra is an Event Impact Forecasting & Response Intelligence System. Would you like a quick tour of our features, starting from the Dashboard and going all the way to Resources?
+                Sancara is an Event Impact Forecasting and Response Intelligence System. Would you like a quick tour of our features, starting from the Dashboard and going all the way to Resources?
               </p>
             </div>
             <div className="flex gap-3 pt-2">
@@ -215,9 +276,25 @@ export default function TourGuide() {
         </div>
       )}
 
-      {/* Active Tour Modal/Banner (Bottom Right) */}
+      {/* Active Tour Modal/Banner (Bottom Right or positioned adjacent to Sidebar link) */}
       {active && currentStep && (
-        <div className="fixed bottom-4 right-4 z-50 max-w-sm w-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-2xl border border-surface-border/80 dark:border-slate-800/80 shadow-2xl p-5 space-y-4 animate-slide-up">
+        <div
+          className="fixed z-50 max-w-sm w-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-2xl border border-surface-border/80 dark:border-slate-800/80 shadow-2xl p-5 space-y-4 animate-slide-up"
+          style={coords ? {
+            top: `${coords.top}px`,
+            left: `${coords.left}px`,
+            bottom: 'auto',
+            right: 'auto'
+          } : {
+            bottom: '16px',
+            right: '16px'
+          }}
+        >
+          {/* Tooltip pointing arrow for desktop adjacent popups */}
+          {coords && (
+            <div className="absolute top-[90px] -left-2 w-4 h-4 bg-white dark:bg-slate-900 border-l border-b border-surface-border/80 dark:border-slate-800/80 rotate-45 pointer-events-none" />
+          )}
+
           {/* Progress bar */}
           <div className="h-1 w-full bg-surface-border/40 dark:bg-slate-800 rounded-full overflow-hidden">
             <div
@@ -255,7 +332,7 @@ export default function TourGuide() {
           {currentStep.instruction && (
             <div className="bg-primary-50/50 dark:bg-primary-950/20 border border-primary-100/60 dark:border-primary-900/40 rounded-xl p-2.5">
               <p className="text-[11px] font-semibold text-primary-700 dark:text-primary-400">
-                💡 Instruction:
+                Instruction:
               </p>
               <p className="text-[11px] text-ink-secondary dark:text-slate-400 mt-0.5 leading-snug">
                 {currentStep.instruction}
