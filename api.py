@@ -85,6 +85,18 @@ def _clean_json(obj):
     return obj
 
 
+def _safe_str(v) -> str:
+    """Helper to convert values to string, handling Pandas NaN and string 'nan' / 'null' values cleanly."""
+    if v is None:
+        return ""
+    if isinstance(v, float) and (np.isnan(v) or np.isinf(v)):
+        return ""
+    s = str(v).strip()
+    if s.lower() == 'nan' or s.lower() == 'null':
+        return ""
+    return s
+
+
 def _get_impact_label(level: int) -> str:
     return {0: 'Low', 1: 'Medium', 2: 'High', 3: 'Critical'}.get(level, 'Unknown')
 
@@ -289,12 +301,12 @@ def get_events(limit: int = 100):
         if pd.isna(imp_lvl) or np.isinf(imp_lvl) if isinstance(imp_lvl, float) else False:
             imp_lvl = 1
         events.append({
-            "id": str(row.get('id', '')),
-            "event_cause": str(row.get('event_cause', '')),
-            "corridor": str(row.get('corridor', '')),
-            "junction": str(row.get('junction', '')),
+            "id": _safe_str(row.get('id', '')),
+            "event_cause": _safe_str(row.get('event_cause', '')),
+            "corridor": _safe_str(row.get('corridor', '')),
+            "junction": _safe_str(row.get('junction', '')),
             "resolution_minutes": round(float(res_mins), 1),
-            "priority": str(row.get('priority', '')),
+            "priority": _safe_str(row.get('priority', '')),
             "impact_level": int(imp_lvl),
             "impact_label": _get_impact_label(int(imp_lvl)),
         })
@@ -346,12 +358,12 @@ def run_autopsy_endpoint(input_data: AutopsyInput):
 
     return _clean_json({
         "event": {
-            "id": event_row.get('id', ''),
-            "event_cause": event_row.get('event_cause', ''),
-            "corridor": event_row.get('corridor', ''),
-            "junction": event_row.get('junction', ''),
+            "id": _safe_str(event_row.get('id', '')),
+            "event_cause": _safe_str(event_row.get('event_cause', '')),
+            "corridor": _safe_str(event_row.get('corridor', '')),
+            "junction": _safe_str(event_row.get('junction', '')),
             "resolution_minutes": actual_res,
-            "priority": event_row.get('priority', ''),
+            "priority": _safe_str(event_row.get('priority', '')),
             "impact_level": int(event_row.get('impact_level', 1)),
             "impact_label": _get_impact_label(int(event_row.get('impact_level', 1))),
         },
@@ -397,14 +409,14 @@ def get_events_geo(limit: int = 2000):
     events = []
     for _, row in subset.iterrows():
         events.append({
-            'id': str(row.get('id', '')),
+            'id': _safe_str(row.get('id', '')),
             'latitude': float(row['latitude']),
             'longitude': float(row['longitude']),
-            'event_cause': str(row.get('event_cause', '')),
-            'start_datetime': str(row.get('start_datetime', '')),
-            'junction': str(row.get('junction', '')),
-            'corridor': str(row.get('corridor', '')),
-            'zone': str(row.get('zone', '')),
+            'event_cause': _safe_str(row.get('event_cause', '')),
+            'start_datetime': _safe_str(row.get('start_datetime', '')),
+            'junction': _safe_str(row.get('junction', '')),
+            'corridor': _safe_str(row.get('corridor', '')),
+            'zone': _safe_str(row.get('zone', '')),
             'impact_level': int(row.get('impact_level', 1)),
         })
     return {'events': events}
