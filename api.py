@@ -47,7 +47,24 @@ def _load_all():
     _cache['graph'], _cache['centrality'] = load_network()
     _cache['sim_vec'], _cache['sim_mat'], _cache['sim_data'] = load_similarity_engine()
     _cache['hotspots'] = load_hotspot_models()
+
+    # Precompute and cache feature engineered dataset to avoid 40s lag on requests
+    df = _cache['df']
+    cmap = _cache['encoders'].get('cmap')
+    _, targets, _, _ = engineer_features(df, is_train=True, centrality_map=cmap)
+    df_feat = df.copy()
+    df_feat['resolution_minutes'] = targets['resolution_minutes']
+    df_feat['impact_level'] = targets['impact_level']
+    df_feat['priority_High'] = (df_feat['priority'].astype(str).str.lower().str.strip() == 'high').astype(int)
+    df_feat['requires_road_closure'] = df_feat['requires_road_closure'].fillna(0).astype(int)
+    _cache['df_feat'] = df_feat
+
     return _cache
+
+
+@app.on_event("startup")
+def startup_event():
+    _load_all()
 
 
 def _safe_val(v, default=0):
@@ -123,11 +140,7 @@ def health():
 def dashboard_stats():
     c = _load_all()
     df = c['df']
-
-    X, targets, _, _ = engineer_features(df, is_train=True)
-    df_feat = df.copy()
-    df_feat['resolution_minutes'] = targets['resolution_minutes']
-    df_feat['impact_level'] = targets['impact_level']
+    df_feat = c['df_feat']
 
     total = len(df)
     active = int((df['status'] == 'active').sum())
@@ -155,7 +168,7 @@ def dashboard_stats():
         "junctions_count": int(df['junction'].nunique()),
         "zones_count": int(df['zone'].nunique()),
         "event_type_distribution": df['event_type'].value_counts().to_dict(),
-        "impact_distribution": {str(k): int(v) for k, v in targets['impact_level'].value_counts().sort_index().to_dict().items()},
+        "impact_distribution": {str(k): int(v) for k, v in df_feat['impact_level'].value_counts().sort_index().to_dict().items()},
         "cause_distribution": df['event_cause'].value_counts().head(8).to_dict(),
         "corridor_distribution": df['corridor'].value_counts().head(10).to_dict(),
         "time_series": {str(k): int(v) for k, v in daily.head(60).items()},
@@ -166,13 +179,7 @@ def dashboard_stats():
 @app.get("/api/dashboard/vulnerability")
 def get_vulnerability(top_n: int = 20, min_events: int = 5):
     c = _load_all()
-    df = c['df']
-    X, targets, _, _ = engineer_features(df, is_train=True)
-    df_feat = df.copy()
-    df_feat['resolution_minutes'] = targets['resolution_minutes']
-    df_feat['impact_level'] = targets['impact_level']
-    df_feat['priority_High'] = (df_feat['priority'].astype(str).str.lower().str.strip() == 'high').astype(int)
-    df_feat['requires_road_closure'] = df_feat['requires_road_closure'].fillna(0).astype(int)
+    df_feat = c['df_feat']
     centrality_df = c.get('centrality')
     vuln = compute_junction_vulnerability(df_feat, centrality_df=centrality_df)
     filtered = vuln[vuln['event_count'] >= min_events].head(top_n)
@@ -270,11 +277,7 @@ def get_hotspots(cause: Optional[str] = None):
 @app.get("/api/events")
 def get_events(limit: int = 100):
     c = _load_all()
-    df = c['df']
-    X, targets, _, _ = engineer_features(df, is_train=True)
-    df_feat = df.copy()
-    df_feat['resolution_minutes'] = targets['resolution_minutes']
-    df_feat['impact_level'] = targets['impact_level']
+    df_feat = c['df_feat']
 
     subset = df_feat.head(limit)
     events = []
@@ -301,12 +304,7 @@ def get_events(limit: int = 100):
 @app.post("/api/autopsy")
 def run_autopsy_endpoint(input_data: AutopsyInput):
     c = _load_all()
-    df = c['df']
-
-    X, targets, _, _ = engineer_features(df, is_train=True)
-    df_feat = df.copy()
-    df_feat['resolution_minutes'] = targets['resolution_minutes']
-    df_feat['impact_level'] = targets['impact_level']
+    df_feat = c['df_feat']
 
     event_row = df_feat[df_feat['id'] == input_data.event_id]
     if len(event_row) == 0:
