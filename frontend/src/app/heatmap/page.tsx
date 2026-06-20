@@ -106,8 +106,8 @@ export default function HeatmapPage() {
 
       circle.bindPopup(`
         <div style="font-family:Inter,sans-serif;min-width:160px;padding:2px">
-          <p style="font-weight:700;font-size:13px;margin:0 0 3px;color:#1e293b">${locationText}</p>
-          <p style="font-weight:500;font-size:10.5px;color:#64748b;margin:0;text-transform:capitalize">${ev.event_cause?.replace(/_/g,' ')}</p>
+          <p style="font-weight:700;font-size:13px;margin:0 0 3px;">${locationText}</p>
+          <p style="font-weight:500;font-size:10.5px;margin:0;text-transform:capitalize;opacity:0.8;">${ev.event_cause?.replace(/_/g,' ')}</p>
         </div>
       `);
       markersRef.current.push(circle);

@@ -186,7 +186,7 @@ export default function CorridorsPage() {
         /* Modern styled-popup for Leaflet */
         .leaflet-popup-content-wrapper {
           background: #0f172a !important;
-          color: #f8fafc !important;
+          color: #ffffff !important;
           border: 1px solid #334155 !important;
           border-radius: 12px !important;
           font-family: system-ui, -apple-system, sans-serif !important;
@@ -203,11 +203,11 @@ export default function CorridorsPage() {
         }
         .popup-title {
           font-weight: 700;
-          color: #f1f5f9;
+          color: #ffffff;
           margin-bottom: 4px;
         }
         .popup-desc {
-          color: #94a3b8;
+          color: #ffffff;
         }
       </style>
     </head>
