@@ -117,40 +117,25 @@ graph TD
 
 ---
 
-## Key Features & Interactive Modules
+## Key Features
 
-Sañcāra includes several diagnostic, forecasting, and simulation modules built on real ASTRAM dataset insights:
+Sañcāra includes thirteen core features and diagnostic modules designed to support traffic operations:
 
-### 1. 📻 ಕನ್ನಡ (Kannada) Public Broadcast Generator
-- **Path**: `frontend/src/app/broadcast`
-- Automatically constructs dual-language traffic advisories in **Kannada** and **English** for public broadcasting.
-- Integrates predicted congestion severity and recovery times directly into standard announcement templates, supporting one-click clipboard copying.
+1. **Dashboard Metrics**: Provides a high-level overview of traffic event trends, spatial distributions, and active incident diagnostics.
+2. **Event Impact Prediction**: Predicts congestion severity, estimated resolution time, and resource needs using the XGBoost ML model backend.
+3. **Historical Hotspot Map**: Displays raw historical traffic event coordinates in Bangalore on an interactive Leaflet map with location click popups.
+4. **Junction Vulnerability Index**: Ranks and highlights critical junctions based on historical incident counts, average delays, and road closures.
+5. **Historical Case Search**: Matches and finds similar past traffic incidents in the ASTRAM dataset using Cosine Similarity.
+6. **Response Replay & Autopsy**: Performs autopsy analysis on past events to determine counterfactual point-of-no-return and response efficacy.
+7. **Corridor Analysis**: Visualizes major Bengaluru corridors, active congestion levels, and junction nodes.
+8. **Planned Event Analysis**: Details construction, VIP movements, protests, and processions from the ASTRAM dataset to assess temporal/spatial risk.
+9. **What-If Scenario Simulator**: Compares two event configurations side-by-side to evaluate cascading congestion and cascaded delay risks.
+10. **Historical Risk Calendar**: Displays a daily heatmap grid of incidents with a vertical monthly summary sidebar showing key averages.
+11. **Kannada Public Broadcast Generator**: Generates public traffic advisory announcements in Kannada with English reference translations.
+12. **AI Chatbot**: Answers traffic queries and suggests routing and deployment strategies using an LLM chatbot.
+13. **Resource Allocator**: Recommends resource allocations (officers, barricades, diversions) based on event priority and road closures.
 
-### 2. 🗺️ Historical Hotspot Map
-- **Path**: `frontend/src/app/heatmap`
-- Renders an interactive Leaflet map plotting raw coordinates for historical traffic events across Bangalore.
-- Clicking any coordinate dot displays the exact location (Junction/Corridor) and the event cause.
-- Missing/invalid values (`nan` or `null`) are sanitized case-insensitively for clean layout presentation.
-
-### 3. 📊 Planned Event Analysis
-- **Path**: `frontend/src/app/planned`
-- Visualizes scheduling statistics and bottleneck distributions of **467 planned events** (311 constructions, 84 public events, 38 processions, 20 VIP movements, and 8 protests).
-- Analyzes peak-time impact distributions (e.g., peak starts at 21:00 for night shift construction) and ranks the top-affected junctions.
-
-### 4. 🎛️ What-If Cause/Corridor Simulator
-- **Path**: `frontend/src/app/simulator`
-- Compares two incident configurations side-by-side (e.g., comparing weather or corridor options).
-- Uses the XGBoost model backend to compute comparative severity levels, minutes to resolve, and cascading congestion risk.
-
-### 5. 📅 Historical Risk Calendar
-- **Path**: `frontend/src/app/calendar`
-- Features a daily heatmap grid displaying ASTRAM events from November 2023 through April 2024.
-- Includes a vertical **Monthly Summary** sidebar strip at the right side of the calendar, offering total event counts and daily average statistics for clean comparative analysis without scrolling.
-
-### 6. 🧭 Interactive Tour Guide
-- A premium, multi-page application tour guide activated by a prominent **floating blue oval button** in the top-right corner of the dashboard.
-- Points directly to relevant sidebar links for each feature, providing context and actionable instructions at every step.
-- Built without emojis for a clean, professional, enterprise-grade feel.
+*Additionally, a global **Interactive Tour Guide** can be activated via a floating blue oval button in the top-right corner to guide users through each of these features.*
 
 ---
 
