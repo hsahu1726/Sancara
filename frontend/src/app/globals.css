@@ -194,7 +194,7 @@ main::before {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.2; /* Adjusted watermark opacity to 20% */
+  opacity: 0.15; /* Adjusted watermark opacity to 15% */
   pointer-events: none;
   z-index: 0;
 }
