@@ -141,27 +141,27 @@ function SimilarEventCard({ event, rank }: { event: SimilarEvent; rank: number }
 
   return (
     <div className="card-hover flex items-start gap-4 !p-4">
-      <div className="w-8 h-8 rounded-xl bg-primary-50 text-primary-600 flex items-center justify-center text-sm font-bold shrink-0">
+      <div className="w-8 h-8 rounded-xl bg-primary-50 dark:bg-primary-950/20 text-primary-600 dark:text-primary-400 flex items-center justify-center text-sm font-bold shrink-0">
         {rank}
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-sm font-medium text-ink capitalize">{event.event_cause.replace(/_/g, ' ')}</span>
-          <span className={`${impactStyles[event.impact_label] || 'bg-slate-100 text-slate-600'} px-2 py-0.5 rounded text-[10px] font-medium`}>
+          <span className="text-sm font-medium text-ink dark:text-slate-100 capitalize">{event.event_cause.replace(/_/g, ' ')}</span>
+          <span className={`${impactStyles[event.impact_label] || 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'} px-2 py-0.5 rounded text-[10px] font-medium`}>
             {event.impact_label}
           </span>
         </div>
-        <p className="text-xs text-ink-secondary mt-1">
+        <p className="text-xs text-ink-secondary dark:text-slate-400 mt-1">
           {event.corridor} · {event.zone} · {event.junction && event.junction !== 'unknown' ? event.junction : '—'}
         </p>
-        <div className="flex items-center gap-4 mt-2 text-xs text-ink-muted">
+        <div className="flex items-center gap-4 mt-2 text-xs text-ink-muted dark:text-slate-500">
           <span className="flex items-center gap-1"><Clock size={12} /> {event.resolution_minutes} min</span>
           <span className="flex items-center gap-1"><Shield size={12} /> {event.priority} priority</span>
         </div>
       </div>
       <div className="text-right shrink-0">
         <p className="text-lg font-bold text-primary-500 tabular-nums">{simPct}%</p>
-        <p className="text-[10px] text-ink-muted">similar</p>
+        <p className="text-[10px] text-ink-muted dark:text-slate-500">similar</p>
       </div>
     </div>
   );

@@ -15,6 +15,16 @@ body {
 }
 
 @layer base {
+  :root {
+    --tooltip-bg: #ffffff;
+    --tooltip-border: #E7E2DC;
+    --tooltip-text: #1C1917;
+  }
+  .dark {
+    --tooltip-bg: #0f172a;
+    --tooltip-border: #1e293b;
+    --tooltip-text: #f1f5f9;
+  }
   * { @apply border-surface-border dark:border-slate-800/80; }
   body { @apply bg-surface text-ink antialiased transition-colors duration-200 dark:bg-slate-950 dark:text-slate-100; }
 }

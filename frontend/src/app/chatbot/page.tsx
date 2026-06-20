@@ -161,7 +161,7 @@ export default function ChatbotPage() {
 
       <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-5 mt-5">
         {/* Left Suggestions Pane */}
-        <div className="lg:col-span-3 space-y-4 flex flex-col justify-between p-4 bg-surface-card border border-surface-border rounded-2xl h-fit lg:h-full">
+        <div className="lg:col-span-3 space-y-4 flex flex-col justify-between p-4 bg-surface-card dark:bg-slate-900 border border-surface-border dark:border-slate-800 rounded-2xl h-fit lg:h-full">
           <div className="space-y-4">
             <h3 className="text-xs font-bold text-ink-muted uppercase tracking-wider flex items-center gap-1.5">
               <Cpu size={14} className="text-primary-500" /> Scenario Presets
@@ -171,7 +171,7 @@ export default function ChatbotPage() {
                 <button
                   key={idx}
                   onClick={() => handleSend(preset)}
-                  className="text-left p-3.5 rounded-xl border border-surface-border hover:bg-surface-hover hover:border-surface-border-hover transition-all text-xs font-medium text-ink-secondary leading-relaxed bg-surface-subtle"
+                  className="text-left p-3.5 rounded-xl border border-surface-border dark:border-slate-800 hover:bg-surface-hover dark:hover:bg-slate-800 hover:border-surface-border-hover transition-all text-xs font-medium text-ink-secondary dark:text-slate-300 leading-relaxed bg-surface-subtle dark:bg-slate-950/40"
                 >
                   {preset}
                 </button>
@@ -179,9 +179,9 @@ export default function ChatbotPage() {
             </div>
           </div>
           <div className="border-t border-surface-border pt-4 mt-4 hidden lg:block">
-            <div className="flex items-start gap-2.5 bg-primary-50/70 border border-primary-100 rounded-xl p-3.5">
-              <Info size={16} className="text-primary-600 shrink-0 mt-0.5" />
-              <p className="text-[11px] text-primary-700 leading-normal">
+            <div className="flex items-start gap-2.5 bg-primary-50/70 dark:bg-primary-950/20 border border-primary-100 dark:border-primary-900/40 rounded-xl p-3.5">
+              <Info size={16} className="text-primary-600 dark:text-primary-400 shrink-0 mt-0.5" />
+              <p className="text-[11px] text-primary-700 dark:text-primary-300 leading-normal">
                 Sañcāra Copilot drafts immediate response loops by cross-referencing real-time incident parameters with historical patterns.
               </p>
             </div>
@@ -189,9 +189,9 @@ export default function ChatbotPage() {
         </div>
 
         {/* Right Chat Pane */}
-        <div className="lg:col-span-9 flex flex-col bg-surface-card border border-surface-border rounded-2xl overflow-hidden h-full">
+        <div className="lg:col-span-9 flex flex-col bg-surface-card dark:bg-slate-900 border border-surface-border dark:border-slate-800 rounded-2xl overflow-hidden h-full">
           {/* Scrollable logs */}
-          <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-slate-50/40">
+          <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-slate-50/40 dark:bg-slate-950/40">
             {messages.map(msg => (
               <div key={msg.id} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div className={`max-w-[85%] sm:max-w-[70%] space-y-2`}>
@@ -206,14 +206,14 @@ export default function ChatbotPage() {
                   <div className={`p-4 rounded-2xl text-sm leading-relaxed border ${
                     msg.sender === 'user'
                       ? 'bg-primary-500 border-primary-600 text-white shadow-sm rounded-tr-none'
-                      : 'bg-white border-surface-border text-ink shadow-sm rounded-tl-none'
+                      : 'bg-white border-surface-border text-ink shadow-sm rounded-tl-none dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100'
                   }`}>
                     {/* Markdown rendering helper (simple bold/code formatting) */}
                     <p className="whitespace-pre-line" dangerouslySetInnerHTML={{
                       __html: msg.text
                         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                         .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                        .replace(/`(.*?)`/g, '<code class="bg-slate-100 px-1 py-0.5 rounded text-xs">$1</code>')
+                        .replace(/`(.*?)`/g, '<code class="bg-slate-100 dark:bg-slate-800 dark:text-slate-200 px-1 py-0.5 rounded text-xs">$1</code>')
                     }} />
                   </div>
 
@@ -221,8 +221,8 @@ export default function ChatbotPage() {
                   {msg.cards && msg.cards.length > 0 && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
                       {msg.cards.map((card, cIdx) => (
-                        <div key={cIdx} className="bg-white border border-surface-border shadow-card rounded-xl p-4 space-y-2.5">
-                          <h4 className="text-xs font-bold text-ink flex items-center gap-1.5 border-b border-surface-border pb-2">
+                        <div key={cIdx} className="bg-white border border-surface-border shadow-card rounded-xl p-4 space-y-2.5 dark:bg-slate-850 dark:border-slate-800">
+                          <h4 className="text-xs font-bold text-ink dark:text-slate-50 flex items-center gap-1.5 border-b border-surface-border dark:border-slate-800 pb-2">
                             {card.type === 'alert' && <ShieldAlert size={14} className="text-red-500" />}
                             {card.type === 'resources' && <ClipboardList size={14} className="text-primary-500" />}
                             {card.type === 'diversion' && <Navigation size={14} className="text-emerald-500" />}
@@ -230,7 +230,7 @@ export default function ChatbotPage() {
                           </h4>
                           <ul className="space-y-1.5">
                             {card.details.map((detail, dIdx) => (
-                              <li key={dIdx} className="text-[11px] text-ink-secondary leading-relaxed flex items-start gap-1.5">
+                              <li key={dIdx} className="text-[11px] text-ink-secondary dark:text-slate-400 leading-relaxed flex items-start gap-1.5">
                                 <span className="text-primary-500 font-bold shrink-0 mt-0.5">•</span>
                                 {detail}
                               </li>
@@ -253,7 +253,7 @@ export default function ChatbotPage() {
                     <span>•</span>
                     <span>Typing...</span>
                   </div>
-                  <div className="bg-white border border-surface-border text-ink rounded-2xl rounded-tl-none p-4 shadow-sm flex items-center gap-1.5">
+                  <div className="bg-white border border-surface-border text-ink rounded-2xl rounded-tl-none p-4 shadow-sm flex items-center gap-1.5 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100">
                     <div className="w-2 h-2 bg-primary-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
                     <div className="w-2 h-2 bg-primary-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
                     <div className="w-2 h-2 bg-primary-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
@@ -270,14 +270,14 @@ export default function ChatbotPage() {
               e.preventDefault();
               handleSend(input);
             }}
-            className="p-3.5 border-t border-surface-border bg-white flex gap-3 shrink-0"
+            className="p-3.5 border-t border-surface-border bg-white dark:bg-slate-900 dark:border-slate-800 flex gap-3 shrink-0"
           >
             <input
               type="text"
               placeholder="Ask Copilot for detour route details or resource suggestions..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              className="flex-1 bg-surface-subtle border border-surface-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary-400 focus:ring-1 focus:ring-primary-400/20 text-ink placeholder:text-ink-muted"
+              className="flex-1 bg-surface-subtle border border-surface-border dark:bg-slate-950/40 dark:border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary-400 focus:ring-1 focus:ring-primary-400/20 text-ink dark:text-slate-100 placeholder:text-ink-muted dark:placeholder:text-slate-500"
             />
             <button
               type="submit"

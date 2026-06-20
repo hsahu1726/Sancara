@@ -402,8 +402,8 @@ export default function CorridorsPage() {
                   disabled={activeActions['officer'] === 'success'}
                   className={`flex items-center justify-center gap-2 text-xs font-semibold py-3 px-4 rounded-xl border transition-all ${
                     activeActions['officer'] === 'success'
-                      ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                      : 'bg-white hover:bg-slate-50 border-surface-border text-slate-700 shadow-sm'
+                      ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-900/50'
+                      : 'bg-white hover:bg-slate-50 border-surface-border text-slate-700 shadow-sm dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-slate-800 dark:text-slate-350'
                   }`}
                 >
                   {activeActions['officer'] === 'success' ? <Check size={14} /> : <Navigation size={14} />}
@@ -415,8 +415,8 @@ export default function CorridorsPage() {
                   disabled={activeActions['maps'] === 'success'}
                   className={`flex items-center justify-center gap-2 text-xs font-semibold py-3 px-4 rounded-xl border transition-all ${
                     activeActions['maps'] === 'success'
-                      ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                      : 'bg-white hover:bg-slate-50 border-surface-border text-slate-700 shadow-sm'
+                      ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-900/50'
+                      : 'bg-white hover:bg-slate-50 border-surface-border text-slate-700 shadow-sm dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-slate-800 dark:text-slate-350'
                   }`}
                 >
                   {activeActions['maps'] === 'success' ? <Check size={14} /> : <Send size={14} />}
@@ -428,8 +428,8 @@ export default function CorridorsPage() {
                   disabled={activeActions['sms'] === 'success'}
                   className={`flex items-center justify-center gap-2 text-xs font-semibold py-3 px-4 rounded-xl border transition-all ${
                     activeActions['sms'] === 'success'
-                      ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                      : 'bg-white hover:bg-slate-50 border-surface-border text-slate-700 shadow-sm'
+                      ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-900/50'
+                      : 'bg-white hover:bg-slate-50 border-surface-border text-slate-700 shadow-sm dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-slate-800 dark:text-slate-350'
                   }`}
                 >
                   {activeActions['sms'] === 'success' ? <Check size={14} /> : <AlertCircle size={14} />}

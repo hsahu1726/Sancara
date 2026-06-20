@@ -219,8 +219,8 @@ export default function PredictPage() {
                     disabled={commActions['whatsapp'] === 'success'}
                     className={`flex items-center justify-center gap-2 text-xs font-semibold py-3 px-4 rounded-xl border transition-all ${
                       commActions['whatsapp'] === 'success'
-                        ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                        : 'bg-white hover:bg-slate-50 border-surface-border text-slate-700 shadow-sm'
+                        ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-900/50'
+                        : 'bg-white hover:bg-slate-50 border-surface-border text-slate-700 shadow-sm dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-slate-800 dark:text-slate-350'
                     }`}
                   >
                     {commActions['whatsapp'] === 'success' ? <Check size={14} /> : <MessageSquare size={14} />}
@@ -233,8 +233,8 @@ export default function PredictPage() {
                     disabled={commActions['sms'] === 'success'}
                     className={`flex items-center justify-center gap-2 text-xs font-semibold py-3 px-4 rounded-xl border transition-all ${
                       commActions['sms'] === 'success'
-                        ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                        : 'bg-white hover:bg-slate-50 border-surface-border text-slate-700 shadow-sm'
+                        ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-900/50'
+                        : 'bg-white hover:bg-slate-50 border-surface-border text-slate-700 shadow-sm dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-slate-800 dark:text-slate-350'
                     }`}
                   >
                     {commActions['sms'] === 'success' ? <Check size={14} /> : <Send size={14} />}
@@ -247,8 +247,8 @@ export default function PredictPage() {
                     disabled={commActions['vms'] === 'success'}
                     className={`flex items-center justify-center gap-2 text-xs font-semibold py-3 px-4 rounded-xl border transition-all ${
                       commActions['vms'] === 'success'
-                        ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                        : 'bg-white hover:bg-slate-50 border-surface-border text-slate-700 shadow-sm'
+                        ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-900/50'
+                        : 'bg-white hover:bg-slate-50 border-surface-border text-slate-700 shadow-sm dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-slate-800 dark:text-slate-350'
                     }`}
                   >
                     {commActions['vms'] === 'success' ? <Check size={14} /> : <Radio size={14} />}
@@ -263,9 +263,7 @@ export default function PredictPage() {
                   <BarChart data={result.impact_probabilities.map((p, i) => ({ name: IMPACT_LABELS[i], probability: +(p * 100).toFixed(1) }))}>
                     <XAxis dataKey="name" tick={{ fill: '#A8A29E', fontSize: 12 }} axisLine={false} tickLine={false} />
                     <YAxis domain={[0, 100]} tick={{ fill: '#A8A29E', fontSize: 12 }} axisLine={false} tickLine={false} unit="%" />
-                    <Tooltip
-                      contentStyle={{ background: '#fff', border: '1px solid #E7E2DC', borderRadius: 10, color: '#1C1917', boxShadow: '0 4px 14px rgba(28,25,23,0.08)' }}
-                    />
+                    <Tooltip contentStyle={{ background: 'var(--tooltip-bg)', border: '1px solid var(--tooltip-border)', borderRadius: 10, color: 'var(--tooltip-text)', boxShadow: '0 4px 14px rgba(28,25,23,0.08)' }} />
                     <Bar dataKey="probability" radius={[8, 8, 0, 0]} stroke="none" maxBarSize={48}>
                       {result.impact_probabilities.map((_, i) => (
                         <Cell key={i} fill={IMPACT_COLORS_CHART[i]} />
@@ -285,22 +283,22 @@ export default function PredictPage() {
 function ResultCard({ icon: Icon, value, label, color, delta }: any) {
   return (
     <div className="card text-center">
-      <div className="w-9 h-9 rounded-xl bg-surface-subtle flex items-center justify-center mx-auto mb-2.5" style={{ color }}>
+      <div className="w-9 h-9 rounded-xl bg-surface-subtle dark:bg-slate-950/40 flex items-center justify-center mx-auto mb-2.5" style={{ color }}>
         <Icon size={18} />
       </div>
       <p className="text-lg font-bold" style={{ color }}>{value}</p>
       <p className="metric-label mt-0.5">{label}</p>
-      {delta && <p className="text-[10px] text-ink-muted mt-0.5">{delta}</p>}
+      {delta && <p className="text-[10px] text-ink-muted dark:text-slate-400 mt-0.5">{delta}</p>}
     </div>
   );
 }
 
 function MiniCard({ icon: Icon, value, label }: any) {
   return (
-    <div className="bg-surface-subtle rounded-xl p-3.5 text-center border border-surface-border/40">
-      <Icon size={16} className="mx-auto mb-1.5 text-ink-muted" />
-      <p className="text-sm font-semibold text-ink">{value}</p>
-      <p className="text-[10px] text-ink-muted">{label}</p>
+    <div className="bg-surface-subtle dark:bg-slate-950/40 rounded-xl p-3.5 text-center border border-surface-border/40 dark:border-slate-800/40">
+      <Icon size={16} className="mx-auto mb-1.5 text-ink-muted dark:text-slate-400" />
+      <p className="text-sm font-semibold text-ink dark:text-slate-200">{value}</p>
+      <p className="text-[10px] text-ink-muted dark:text-slate-400">{label}</p>
     </div>
   );
 }

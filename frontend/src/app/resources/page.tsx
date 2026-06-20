@@ -139,12 +139,10 @@ export default function ResourcesPage() {
                 </h3>
                 <ResponsiveContainer width="100%" height={280}>
                   <BarChart data={result.reference_table}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#EDE9E4" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="currentColor" className="text-surface-border/60 dark:text-slate-800/80" />
                     <XAxis dataKey="impact" tick={{ fill: '#A8A29E', fontSize: 12 }} axisLine={false} tickLine={false} />
                     <YAxis tick={{ fill: '#A8A29E', fontSize: 12 }} axisLine={false} tickLine={false} />
-                    <Tooltip
-                      contentStyle={{ background: '#fff', border: '1px solid #E7E2DC', borderRadius: 10, color: '#1C1917', boxShadow: '0 4px 14px rgba(28,25,23,0.08)' }}
-                    />
+                    <Tooltip contentStyle={{ background: 'var(--tooltip-bg)', border: '1px solid var(--tooltip-border)', borderRadius: 10, color: 'var(--tooltip-text)', boxShadow: '0 4px 14px rgba(28,25,23,0.08)' }} />
                     <Legend wrapperStyle={{ fontSize: 12, color: '#78716C' }} />
                     <Bar dataKey="officers" name="Officers" fill="#3B82F6" radius={[6, 6, 0, 0]} maxBarSize={32} />
                     <Bar dataKey="barricades" name="Barricades" fill="#EA580C" radius={[6, 6, 0, 0]} maxBarSize={32} />
@@ -167,12 +165,12 @@ export default function ResourcesPage() {
                     </thead>
                     <tbody>
                       {result.reference_table.map((r, i) => (
-                        <tr key={r.impact} className={i % 2 === 0 ? 'bg-surface-subtle/50' : ''}>
-                          <td className="font-medium text-ink">{r.impact}</td>
-                          <td className="text-center text-ink-secondary">{r.officers}</td>
-                          <td className="text-center text-ink-secondary">{r.barricades}</td>
-                          <td className="text-center text-ink-secondary">{r.monitoring}</td>
-                          <td className="text-center text-ink-secondary">{r.diversion}</td>
+                        <tr key={r.impact} className={i % 2 === 0 ? 'bg-surface-subtle/50 dark:bg-slate-950/20' : ''}>
+                          <td className="font-medium text-ink dark:text-slate-200">{r.impact}</td>
+                          <td className="text-center text-ink-secondary dark:text-slate-400">{r.officers}</td>
+                          <td className="text-center text-ink-secondary dark:text-slate-400">{r.barricades}</td>
+                          <td className="text-center text-ink-secondary dark:text-slate-400">{r.monitoring}</td>
+                          <td className="text-center text-ink-secondary dark:text-slate-400">{r.diversion}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -180,8 +178,8 @@ export default function ResourcesPage() {
                 </div>
               </div>
 
-              <div className="card text-xs text-ink-muted leading-relaxed">
-                <p className="font-medium text-ink-secondary mb-1">How resources are calculated:</p>
+              <div className="card text-xs text-ink-muted dark:text-slate-400 leading-relaxed">
+                <p className="font-medium text-ink-secondary dark:text-slate-300 mb-1">How resources are calculated:</p>
                 <ul className="list-disc list-inside space-y-0.5">
                   <li>Base resources determined by impact level (Low → 2 officers, Critical → 15+ officers)</li>
                   <li>Event cause modifiers adjust officer/barricade counts (e.g., public events +30%)</li>
@@ -200,10 +198,10 @@ export default function ResourcesPage() {
 
 function ResourceBox({ icon: Icon, value, label, color }: any) {
   return (
-    <div className="bg-surface-subtle rounded-xl p-4 text-center border border-surface-border/40">
+    <div className="bg-surface-subtle dark:bg-slate-950/40 rounded-xl p-4 text-center border border-surface-border/40 dark:border-slate-800/40">
       <Icon size={18} className="mx-auto mb-1.5" style={{ color }} />
-      <p className="text-lg font-bold text-ink">{value}</p>
-      <p className="text-[10px] text-ink-muted mt-0.5">{label}</p>
+      <p className="text-lg font-bold text-ink dark:text-slate-100">{value}</p>
+      <p className="text-[10px] text-ink-muted dark:text-slate-400 mt-0.5">{label}</p>
     </div>
   );
 }

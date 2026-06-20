@@ -85,9 +85,7 @@ export default function Dashboard() {
                   <Cell key={i} fill={CHART_COLORS[i % 2]} />
                 ))}
               </Pie>
-              <Tooltip
-                contentStyle={{ background: '#fff', border: '1px solid #E7E2DC', borderRadius: 10, color: '#1C1917', boxShadow: '0 4px 14px rgba(28,25,23,0.08)' }}
-              />
+              <Tooltip contentStyle={{ background: 'var(--tooltip-bg)', border: '1px solid var(--tooltip-border)', borderRadius: 10, color: 'var(--tooltip-text)', boxShadow: '0 4px 14px rgba(28,25,23,0.08)' }} />
             </PieChart>
           </ResponsiveContainer>
           <div className="flex justify-center gap-6 mt-2">
@@ -110,9 +108,7 @@ export default function Dashboard() {
             <BarChart data={impactData}>
               <XAxis dataKey="name" tick={{ fill: '#A8A29E', fontSize: 12 }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fill: '#A8A29E', fontSize: 12 }} axisLine={false} tickLine={false} />
-              <Tooltip
-                contentStyle={{ background: '#fff', border: '1px solid #E7E2DC', borderRadius: 10, color: '#1C1917', boxShadow: '0 4px 14px rgba(28,25,23,0.08)' }}
-              />
+              <Tooltip contentStyle={{ background: 'var(--tooltip-bg)', border: '1px solid var(--tooltip-border)', borderRadius: 10, color: 'var(--tooltip-text)', boxShadow: '0 4px 14px rgba(28,25,23,0.08)' }} />
               <Bar dataKey="value" radius={[8, 8, 0, 0]} stroke="none" maxBarSize={48}>
                 {impactData.map((_, i) => (
                   <Cell key={i} fill={IMPACT_COLORS[i % 4]} />
@@ -164,9 +160,7 @@ export default function Dashboard() {
               </defs>
               <XAxis dataKey="date" tick={{ fill: '#A8A29E', fontSize: 10 }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fill: '#A8A29E', fontSize: 12 }} axisLine={false} tickLine={false} />
-              <Tooltip
-                contentStyle={{ background: '#fff', border: '1px solid #E7E2DC', borderRadius: 10, color: '#1C1917', boxShadow: '0 4px 14px rgba(28,25,23,0.08)' }}
-              />
+              <Tooltip contentStyle={{ background: 'var(--tooltip-bg)', border: '1px solid var(--tooltip-border)', borderRadius: 10, color: 'var(--tooltip-text)', boxShadow: '0 4px 14px rgba(28,25,23,0.08)' }} />
               <Area type="monotone" dataKey="count" stroke="#E85D2A" strokeWidth={2} fill="url(#colorCount)" />
             </AreaChart>
           </ResponsiveContainer>
@@ -211,12 +205,12 @@ function MetricCard({ icon: Icon, value, label, color, delta }: any) {
     violet: 'text-violet-500 bg-violet-500/10',
   };
   return (
-    <div className={`bg-white/80 backdrop-blur-md rounded-card border border-surface-border/60 border-l-4 ${borders[color] || borders.primary} p-5 shadow-card relative overflow-hidden transition-all duration-300 hover:-translate-y-0.5 ${glows[color] || glows.primary}`}>
+    <div className={`bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-card border border-surface-border/60 dark:border-slate-800/60 border-l-4 ${borders[color] || borders.primary} p-5 shadow-card relative overflow-hidden transition-all duration-300 hover:-translate-y-0.5 ${glows[color] || glows.primary}`}>
       <div className="flex items-start justify-between">
         <div className="min-w-0">
-          <p className="metric-value text-2xl font-bold tracking-tight text-ink">{value}</p>
-          <p className="metric-label mt-1 text-xs font-medium text-ink-secondary">{label}</p>
-          {delta && <p className="text-[11px] text-ink-muted mt-1.5 font-medium">{delta}</p>}
+          <p className="metric-value text-2xl font-bold tracking-tight text-ink dark:text-slate-50">{value}</p>
+          <p className="metric-label mt-1 text-xs font-medium text-ink-secondary dark:text-slate-400">{label}</p>
+          {delta && <p className="text-[11px] text-ink-muted dark:text-slate-500 mt-1.5 font-medium">{delta}</p>}
         </div>
         <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${icons[color] || icons.primary}`}>
           <Icon size={20} />
@@ -228,14 +222,14 @@ function MetricCard({ icon: Icon, value, label, color, delta }: any) {
 
 function MetricBadge({ label, value, color }: { label: string; value: string; color: string }) {
   const colors: Record<string, string> = {
-    primary: 'text-primary-600 bg-primary-50',
-    emerald: 'text-emerald-600 bg-emerald-50',
-    amber: 'text-amber-600 bg-amber-50',
+    primary: 'text-primary-600 bg-primary-50 dark:text-primary-400 dark:bg-primary-950/20',
+    emerald: 'text-emerald-600 bg-emerald-50 dark:text-emerald-400 dark:bg-emerald-950/20',
+    amber: 'text-amber-600 bg-amber-50 dark:text-amber-400 dark:bg-amber-950/20',
   };
   return (
-    <div className="rounded-xl bg-surface-subtle p-4 text-center border border-surface-border/40">
-      <p className={`text-2xl font-bold ${colors[color]?.split(' ')[0] || 'text-ink'}`}>{value}</p>
-      <p className="text-xs text-ink-secondary mt-1">{label}</p>
+    <div className="rounded-xl bg-surface-subtle dark:bg-slate-950/40 p-4 text-center border border-surface-border/40 dark:border-slate-800/40">
+      <p className={`text-2xl font-bold ${colors[color]?.split(' ')[0] || 'text-ink dark:text-slate-50'}`}>{value}</p>
+      <p className="text-xs text-ink-secondary dark:text-slate-400 mt-1">{label}</p>
     </div>
   );
 }

@@ -68,12 +68,12 @@ export default function HotspotsPage() {
                 <p className="text-sm text-ink-muted">Select an event cause to view hotspots</p>
               </div>
             ) : (
-              <div className="bg-surface-subtle rounded-xl p-8 text-center border border-surface-border/40">
+              <div className="bg-surface-subtle dark:bg-slate-950/40 rounded-xl p-8 text-center border border-surface-border/40 dark:border-slate-800/40">
                 <div className="text-5xl font-bold text-primary-500 mb-2">{causes[selectedCause]}</div>
-                <p className="text-sm text-ink-secondary">hotspot clusters detected</p>
-                <p className="text-xs text-ink-muted mt-6 leading-relaxed max-w-md mx-auto">
+                <p className="text-sm text-ink-secondary dark:text-slate-350">hotspot clusters detected</p>
+                <p className="text-xs text-ink-muted dark:text-slate-400 mt-6 leading-relaxed max-w-md mx-auto">
                   These clusters represent recurring spatial patterns where
-                  <span className="text-ink font-medium capitalize"> {selectedCause.replace(/_/g, ' ')} </span>
+                  <span className="text-ink dark:text-slate-100 font-medium capitalize"> {selectedCause.replace(/_/g, ' ')} </span>
                   events frequently occur. Each cluster groups nearby events using DBSCAN density-based clustering.
                 </p>
               </div>
@@ -97,10 +97,10 @@ export default function HotspotsPage() {
 
 function SummaryBox({ value, label, sub }: { value: number | string; label: string; sub?: string }) {
   return (
-    <div className="bg-surface-subtle rounded-xl p-4 text-center border border-surface-border/40">
-      <p className="text-xl font-bold text-ink">{value}</p>
-      <p className="text-xs text-ink-secondary mt-1">{label}</p>
-      {sub && <p className="text-[10px] text-ink-muted mt-0.5 truncate">{sub}</p>}
+    <div className="bg-surface-subtle dark:bg-slate-950/40 rounded-xl p-4 text-center border border-surface-border/40 dark:border-slate-800/40">
+      <p className="text-xl font-bold text-ink dark:text-slate-100">{value}</p>
+      <p className="text-xs text-ink-secondary dark:text-slate-400 mt-1">{label}</p>
+      {sub && <p className="text-[10px] text-ink-muted dark:text-slate-500 mt-0.5 truncate">{sub}</p>}
     </div>
   );
 }
