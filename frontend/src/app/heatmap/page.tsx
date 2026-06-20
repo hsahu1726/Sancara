@@ -126,8 +126,13 @@ export default function HeatmapPage() {
 
     const color = CAUSE_COLORS[selectedCause] || '#E85D2A';
     clusters.forEach((cl: any) => {
-      const radius = Math.max(12, Math.min(36, cl.size * 2));
-      const m = L.circleMarker([cl.centroid_lat, cl.centroid_lon], {
+      const lat = cl.avg_lat ?? cl.centroid_lat;
+      const lon = cl.avg_lon ?? cl.centroid_lon;
+      const size = cl.count ?? cl.size ?? 0;
+      if (lat === undefined || lon === undefined) return;
+
+      const radius = Math.max(12, Math.min(36, size * 2));
+      const m = L.circleMarker([lat, lon], {
         radius,
         fillColor: color,
         color: '#fff',
@@ -138,11 +143,11 @@ export default function HeatmapPage() {
         <div style="font-family:Inter,sans-serif;min-width:180px">
           <p style="font-weight:700;font-size:13px;margin:0 0 4px">DBSCAN Cluster</p>
           <p style="font-size:11px;margin:0">Cause: <b>${selectedCause.replace(/_/g,' ')}</b></p>
-          <p style="font-size:11px;margin:2px 0">Events in cluster: <b>${cl.size}</b></p>
-          <p style="font-size:10px;color:#999;margin:4px 0 0">${cl.centroid_lat.toFixed(4)}, ${cl.centroid_lon.toFixed(4)}</p>
+          <p style="font-size:11px;margin:2px 0">Events in cluster: <b>${size}</b></p>
+          <p style="font-size:10px;color:#999;margin:4px 0 0">${lat.toFixed(4)}, ${lon.toFixed(4)}</p>
         </div>
       `);
-      m.on('click', () => setSelectedCluster(cl));
+      m.on('click', () => setSelectedCluster({ ...cl, size, centroid_lat: lat, centroid_lon: lon }));
       clusterMarkersRef.current.push(m);
     });
   }, [clusters, showClusters, selectedCause]);
