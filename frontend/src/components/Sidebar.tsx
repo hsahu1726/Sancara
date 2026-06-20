@@ -65,17 +65,28 @@ export default function Sidebar() {
   const sidebarContent = (
     <>
       {/* Logo */}
-      <div className="flex items-center gap-3 px-4 h-16 border-b border-surface-border shrink-0">
-        {!collapsed && (
-          <button onClick={() => setMobileOpen(false)} className="lg:hidden mr-1 p-1 -ml-1 rounded-lg hover:bg-surface-hover">
-            <X size={20} className="text-ink-secondary" />
-          </button>
-        )}
-        <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 shadow-sm">
-          <img src="/wordmark.png" alt="San̄cāra logo" className="w-full h-full object-cover" />
+      <div className="flex items-center justify-between px-4 h-16 border-b border-surface-border shrink-0">
+        <div className="flex items-center gap-3 overflow-hidden">
+          {!collapsed && (
+            <button onClick={() => setMobileOpen(false)} className="lg:hidden mr-1 p-1 -ml-1 rounded-lg hover:bg-surface-hover">
+              <X size={20} className="text-ink-secondary" />
+            </button>
+          )}
+          <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 shadow-sm">
+            <img src="/wordmark.png" alt="San̄cāra logo" className="w-full h-full object-cover" />
+          </div>
+          {!collapsed && (
+            <span className="text-lg font-bold text-ink tracking-tight select-none">San̄cāra</span>
+          )}
         </div>
         {!collapsed && (
-          <span className="text-lg font-bold text-ink tracking-tight select-none">San̄cāra</span>
+          <button
+            onClick={toggleTheme}
+            className="p-1.5 rounded-lg hover:bg-surface-hover text-ink-secondary dark:text-slate-400 transition-colors shrink-0"
+            title={theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+          >
+            {theme === 'dark' ? <Sun size={18} className="text-amber-500" /> : <Moon size={18} />}
+          </button>
         )}
       </div>
 
@@ -100,16 +111,8 @@ export default function Sidebar() {
       {/* Footer controls */}
       <div className="p-2.5 border-t border-surface-border">
         <button
-          onClick={toggleTheme}
-          className="sidebar-link w-full flex items-center gap-3"
-          title={collapsed ? (theme === 'dark' ? 'Light Mode' : 'Dark Mode') : undefined}
-        >
-          {theme === 'dark' ? <Sun size={18} className="text-amber-500 shrink-0" /> : <Moon size={18} className="text-ink-secondary dark:text-slate-400 shrink-0" />}
-          {!collapsed && <span className="truncate">{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>}
-        </button>
-        <button
           onClick={() => setCollapsed(!collapsed)}
-          className="sidebar-link w-full hidden lg:flex items-center gap-3 mt-1"
+          className="sidebar-link w-full hidden lg:flex items-center gap-3"
         >
           {collapsed ? <ChevronRight size={18} className="shrink-0" /> : <ChevronLeft size={18} className="shrink-0" />}
           {!collapsed && <span className="truncate">Collapse</span>}
