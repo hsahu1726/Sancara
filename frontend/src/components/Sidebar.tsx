@@ -12,7 +12,6 @@ import {
 const links = [
   { href: '/',           label: 'Dashboard',        icon: LayoutDashboard },
   { href: '/predict',    label: 'Prediction',        icon: Radar },
-  { href: '/hotspots',   label: 'Hotspots',          icon: MapPin },
   { href: '/heatmap',    label: 'Hotspot Map',        icon: Globe },
   { href: '/vulnerability', label: 'Vulnerability',  icon: AlertTriangle },
   { href: '/similarity', label: 'Similarity',        icon: Search },
