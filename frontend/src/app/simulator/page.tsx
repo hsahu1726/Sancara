@@ -129,6 +129,46 @@ function ResultCard({ result }: { result: PredResult }) {
   );
 }
 
+function getComparisonExplanation(base: PredResult, whatif: PredResult): string {
+  const sevDiff = whatif.impact_level - base.impact_level;
+  const resDiff = whatif.resolution_minutes - base.resolution_minutes;
+  const casDiff = whatif.cascade_probability - base.cascade_probability;
+
+  let part1 = '';
+  if (sevDiff > 0) {
+    part1 = `The What-If scenario predicts a more severe impact level (${whatif.impact_label} vs. ${base.impact_label}).`;
+  } else if (sevDiff < 0) {
+    part1 = `The What-If scenario predicts a less severe impact level (${whatif.impact_label} vs. ${base.impact_label}).`;
+  } else {
+    part1 = `Both scenarios predict the same ${base.impact_label} impact level.`;
+  }
+
+  let part2 = '';
+  if (resDiff > 0) {
+    part2 = `estimated resolution is ${Math.round(resDiff)} minutes longer`;
+  } else if (resDiff < 0) {
+    part2 = `estimated resolution is ${Math.round(Math.abs(resDiff))} minutes shorter`;
+  } else {
+    part2 = `estimated resolution time is unchanged`;
+  }
+
+  let part3 = '';
+  if (casDiff > 0) {
+    part3 = `, although severity and cascade risk are higher.`;
+  } else if (casDiff < 0) {
+    part3 = `, with cascade risk ${Math.round(Math.abs(casDiff))} percentage points lower.`;
+  } else {
+    part3 = `, with no change in cascade risk.`;
+  }
+
+  // Adjust wording if severity is higher/lower but resolution is shorter/longer
+  if (sevDiff > 0 && resDiff < 0 && casDiff > 0) {
+    return `estimated resolution is ${Math.round(Math.abs(resDiff))} minutes shorter, although severity and cascade risk are higher.`;
+  }
+
+  return `${part1} ${part2}${part3}`;
+}
+
 function DeltaChip({ base, whatif, label, unit = '', lowerIsBetter = true }: {
   base: number; whatif: number; label: string; unit?: string; lowerIsBetter?: boolean;
 }) {
@@ -138,15 +178,21 @@ function DeltaChip({ base, whatif, label, unit = '', lowerIsBetter = true }: {
   const color = diff === 0 ? 'text-ink-muted dark:text-slate-500' : improved ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400';
   const bg = diff === 0 ? 'bg-surface-subtle dark:bg-slate-900/60' : improved ? 'bg-emerald-50 dark:bg-emerald-950/20' : 'bg-red-50 dark:bg-red-950/20';
   const Icon = diff === 0 ? Minus : improved ? TrendingDown : TrendingUp;
+
+  const isPercentage = unit === '%';
+  const displayVal = isPercentage
+    ? `${diff > 0 ? '+' : ''}${Math.round(diff)} percentage points`
+    : `${diff > 0 ? '+' : ''}${diff !== 0 ? `${Math.round(Math.abs(diff))}${unit}` : 'No change'}`;
+
   return (
     <div className={`${bg} rounded-xl p-3 border border-surface-border/40 dark:border-slate-800/40`}>
       <p className="text-[10px] text-ink-muted dark:text-slate-500 font-medium mb-1">{label}</p>
       <div className={`flex items-center gap-1.5 ${color}`}>
         <Icon size={14} />
         <span className="text-sm font-bold">
-          {diff > 0 ? '+' : ''}{diff !== 0 ? `${Math.round(Math.abs(diff))}${unit}` : 'No change'}
+          {diff === 0 ? 'No change' : displayVal}
         </span>
-        {diff !== 0 && <span className="text-[10px]">({pct}%)</span>}
+        {!isPercentage && diff !== 0 && <span className="text-[10px]">({pct}%)</span>}
       </div>
     </div>
   );
@@ -248,19 +294,24 @@ export default function SimulatorPage() {
               />
             </div>
             <div className="bg-surface-subtle dark:bg-slate-900/40 rounded-xl p-4 border border-surface-border/40 dark:border-slate-800/40">
-              {whatifResult.impact_level > baseResult.impact_level ? (
-                <p className="text-sm text-red-600 dark:text-red-400 flex items-center gap-2">
-                  <AlertTriangle size={14} /> The What-If scenario is <strong>more severe</strong> — resolution takes {Math.round(whatifResult.resolution_minutes - baseResult.resolution_minutes)} minutes longer with {(whatifResult.cascade_probability - baseResult.cascade_probability).toFixed(0)}% higher cascade risk.
-                </p>
-              ) : whatifResult.impact_level < baseResult.impact_level ? (
-                <p className="text-sm text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
-                  <Zap size={14} /> The What-If scenario is <strong>less severe</strong> — saves ~{Math.round(baseResult.resolution_minutes - whatifResult.resolution_minutes)} minutes resolution time with lower cascade risk.
-                </p>
-              ) : (
-                <p className="text-sm text-ink-secondary dark:text-slate-400 flex items-center gap-2">
-                  <Minus size={14} /> Both scenarios predict the same <strong>{baseResult.impact_label}</strong> impact level. Resolution time differs by {Math.abs(Math.round(whatifResult.resolution_minutes - baseResult.resolution_minutes))} minutes.
-                </p>
-              )}
+              <p className={`text-sm flex items-start gap-2 ${
+                whatifResult.impact_level > baseResult.impact_level
+                  ? 'text-red-600 dark:text-red-400'
+                  : whatifResult.impact_level < baseResult.impact_level
+                    ? 'text-emerald-600 dark:text-emerald-400'
+                    : 'text-ink-secondary dark:text-slate-400'
+              }`}>
+                {whatifResult.impact_level > baseResult.impact_level ? (
+                  <AlertTriangle size={16} className="shrink-0 mt-0.5" />
+                ) : whatifResult.impact_level < baseResult.impact_level ? (
+                  <Zap size={16} className="shrink-0 mt-0.5" />
+                ) : (
+                  <Minus size={16} className="shrink-0 mt-0.5" />
+                )}
+                <span>
+                  {getComparisonExplanation(baseResult, whatifResult)}
+                </span>
+              </p>
             </div>
           </div>
         </div>

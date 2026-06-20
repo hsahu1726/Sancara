@@ -23,12 +23,30 @@ const CAUSE_COLORS: Record<string, string> = {
 
 const ALL_CAUSES_LIST = Object.keys(CAUSE_COLORS);
 
+const getMonthStr = (dt: string) => {
+  if (!dt) return '';
+  return dt.substring(0, 7); // "YYYY-MM"
+};
+
+const getDayName = (dt: string) => {
+  if (!dt) return '';
+  try {
+    const t = dt.includes('T') ? dt : dt.replace(' ', 'T');
+    const day = new Date(t).getDay();
+    return ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][day] || '';
+  } catch (e) {
+    return '';
+  }
+};
+
 export default function HeatmapPage() {
   const mapRef = useRef<HTMLDivElement>(null);
   const leafletRef = useRef<any>(null);
   const markersRef = useRef<any[]>([]);
 
   const [selectedCause, setSelectedCause] = useState<string>('all');
+  const [selectedMonth, setSelectedMonth] = useState<string>('all');
+  const [selectedDay, setSelectedDay] = useState<string>('all');
   const [loading, setLoading] = useState(true);
   const [rawEvents, setRawEvents] = useState<any[]>([]);
 
@@ -52,6 +70,16 @@ export default function HeatmapPage() {
     });
     return counts;
   }, [rawEvents]);
+
+  // Dynamically filter raw events
+  const filteredEvents = useMemo(() => {
+    return rawEvents.filter(ev => {
+      const matchCause = selectedCause === 'all' || ev.event_cause === selectedCause;
+      const matchMonth = selectedMonth === 'all' || getMonthStr(ev.start_datetime) === selectedMonth;
+      const matchDay = selectedDay === 'all' || getDayName(ev.start_datetime) === selectedDay;
+      return matchCause && matchMonth && matchDay;
+    });
+  }, [rawEvents, selectedCause, selectedMonth, selectedDay]);
 
   // Init Leaflet map
   useEffect(() => {
@@ -83,11 +111,7 @@ export default function HeatmapPage() {
     markersRef.current.forEach(m => m.remove());
     markersRef.current = [];
 
-    const filtered = selectedCause === 'all'
-      ? rawEvents
-      : rawEvents.filter(e => e.event_cause === selectedCause);
-
-    filtered.slice(0, 1000).forEach(ev => {
+    filteredEvents.slice(0, 1000).forEach(ev => {
       const color = CAUSE_COLORS[ev.event_cause] || '#94A3B8';
       const circle = L.circleMarker([ev.latitude, ev.longitude], {
         radius: 5,
@@ -112,22 +136,20 @@ export default function HeatmapPage() {
       `);
       markersRef.current.push(circle);
     });
-  }, [rawEvents, selectedCause]);
+  }, [filteredEvents]);
 
-  const totalEvents = selectedCause === 'all'
-    ? rawEvents.length
-    : rawEvents.filter(e => e.event_cause === selectedCause).length;
+  const totalEvents = filteredEvents.length;
 
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="page-header">
         <h1 className="page-title">Historical Hotspot Map</h1>
-        <p className="page-desc">ASTRAM event locations across Bangalore — {rawEvents.length.toLocaleString()} events plotted</p>
+        <p className="page-desc">Displaying a representative 2,000-event map sample from 8,173 ASTRAM records (performance-optimized sample for smooth browser rendering).</p>
       </div>
 
       {/* Controls */}
-      <div className="card flex flex-wrap items-end justify-between gap-4">
-        <div className="flex-1 min-w-[200px]">
+      <div className="card grid grid-cols-1 sm:grid-cols-5 gap-4 items-end">
+        <div className="sm:col-span-2">
           <label className="input-label">Filter by Event Cause</label>
           <select className="select-field" value={selectedCause} onChange={e => setSelectedCause(e.target.value)}>
             <option value="all">All Causes ({rawEvents.length} events)</option>
@@ -136,9 +158,34 @@ export default function HeatmapPage() {
             ))}
           </select>
         </div>
-        <div className="bg-surface-subtle dark:bg-slate-900/60 rounded-xl px-4 py-2.5 border border-surface-border/40 dark:border-slate-800/60 text-center">
+        <div>
+          <label className="input-label">Filter by Month</label>
+          <select className="select-field" value={selectedMonth} onChange={e => setSelectedMonth(e.target.value)}>
+            <option value="all">All Months</option>
+            <option value="2023-11">November 2023</option>
+            <option value="2023-12">December 2023</option>
+            <option value="2024-01">January 2024</option>
+            <option value="2024-02">February 2024</option>
+            <option value="2024-03">March 2024</option>
+            <option value="2024-04">April 2024</option>
+          </select>
+        </div>
+        <div>
+          <label className="input-label">Filter by Day of Week</label>
+          <select className="select-field" value={selectedDay} onChange={e => setSelectedDay(e.target.value)}>
+            <option value="all">All Days</option>
+            <option value="Sunday">Sunday</option>
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+            <option value="Saturday">Saturday</option>
+          </select>
+        </div>
+        <div className="bg-surface-subtle dark:bg-slate-900/60 rounded-xl px-4 py-2 border border-surface-border/40 dark:border-slate-800/60 text-center">
           <p className="text-lg font-bold text-ink dark:text-slate-100">{totalEvents.toLocaleString()}</p>
-          <p className="text-[10px] text-ink-muted dark:text-slate-400">Events shown</p>
+          <p className="text-[10px] text-ink-muted dark:text-slate-400">Events matching</p>
         </div>
       </div>
 

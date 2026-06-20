@@ -36,7 +36,7 @@ export default function Dashboard() {
     <div className="space-y-7 animate-fade-in">
       <div className="page-header">
         <h1 className="page-title">Operational Dashboard</h1>
-        <p className="page-desc">Real-time overview of traffic event intelligence</p>
+        <p className="page-desc">Historical ASTRAM operational intelligence</p>
       </div>
 
       {/* Metric Cards */}
@@ -50,7 +50,7 @@ export default function Dashboard() {
         <MetricCard
           icon={Zap}
           value={stats.active_events}
-          label="Active Events"
+          label="Historically Unresolved / Active Records"
           color="amber"
           delta={`${(stats.active_events / stats.total_events * 100).toFixed(1)}% of total`}
         />
