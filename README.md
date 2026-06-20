@@ -135,7 +135,7 @@ Sañcāra includes thirteen core features and diagnostic modules designed to sup
 12. **AI Chatbot**: Answers traffic queries and suggests routing and deployment strategies using an LLM chatbot.
 13. **Resource Allocator**: Recommends resource allocations (officers, barricades, diversions) based on event priority and road closures.
 
-*Additionally, a global **Interactive Tour Guide** can be activated via a floating blue oval button in the top-right corner to guide users through each of these features.*
+*Additionally, a global **Interactive Tour Guide** can be activated via a floating blue oval button to guide users through each of these features, alongside a **Dark Mode Toggle** next to the logo to switch application themes.*
 
 ---
 
