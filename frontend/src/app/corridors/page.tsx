@@ -306,18 +306,18 @@ export default function CorridorsPage() {
                   onClick={() => setSelectedId(d.id)}
                   className={`w-full text-left p-4 rounded-xl border transition-all duration-200 ${
                     active
-                      ? 'bg-primary-50 border-primary-300 shadow-sm'
-                      : 'bg-surface-card border-surface-border hover:bg-surface-hover hover:border-surface-border-hover'
+                      ? 'bg-primary-50 border-primary-300 shadow-sm dark:bg-primary-900/20 dark:border-primary-700/50'
+                      : 'bg-surface-card border-surface-border hover:bg-surface-hover hover:border-surface-border-hover dark:bg-slate-900 dark:border-slate-800 dark:hover:bg-slate-800 dark:hover:border-slate-700'
                   }`}
                 >
                   <div className="flex justify-between items-start mb-1">
-                    <p className={`text-sm font-semibold ${active ? 'text-primary-900' : 'text-ink'}`}>{d.name}</p>
+                    <p className={`text-sm font-semibold ${active ? 'text-primary-900 dark:text-primary-300' : 'text-ink dark:text-slate-100'}`}>{d.name}</p>
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded border capitalize ${severityColors[d.severity]}`}>
                       {d.severity}
                     </span>
                   </div>
-                  <p className="text-xs text-ink-secondary mb-2 truncate">Bypass: {d.alternativeName}</p>
-                  <div className="flex items-center gap-3 text-xs text-ink-muted">
+                  <p className="text-xs text-ink-secondary dark:text-slate-400 mb-2 truncate">Bypass: {d.alternativeName}</p>
+                  <div className="flex items-center gap-3 text-xs text-ink-muted dark:text-slate-500">
                     <span className="flex items-center gap-1">
                       <Clock size={12} />
                       Save {d.savingsTime}
@@ -337,11 +337,11 @@ export default function CorridorsPage() {
             {/* Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-surface-border pb-4">
               <div>
-                <h2 className="text-lg font-bold text-ink">{selected.name}</h2>
-                <p className="text-xs text-ink-muted mt-0.5">Primary Congestion: <span className="text-red-500 font-medium">{selected.congestedPoint}</span></p>
+                <h2 className="text-lg font-bold text-ink dark:text-slate-100">{selected.name}</h2>
+                <p className="text-xs text-ink-muted dark:text-slate-400 mt-0.5">Primary Congestion: <span className="text-red-500 font-medium">{selected.congestedPoint}</span></p>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-xs text-ink-muted">Bypass Traffic:</span>
+                <span className="text-xs text-ink-muted dark:text-slate-400">Bypass Traffic:</span>
                 <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full capitalize ${trafficColors[selected.trafficLevel]}`}>
                   {selected.trafficLevel}
                 </span>
@@ -350,21 +350,21 @@ export default function CorridorsPage() {
 
             {/* KPIs */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
-              <div className="bg-surface-subtle border border-surface-border/40 rounded-xl p-3.5">
-                <p className="text-[10px] font-medium text-ink-muted">Normal Travel Time</p>
-                <p className="text-base font-bold text-ink mt-0.5">{selected.normalTime}</p>
+              <div className="bg-surface-subtle border border-surface-border/40 rounded-xl p-3.5 dark:bg-slate-900/60 dark:border-slate-800/60">
+                <p className="text-[10px] font-medium text-ink-muted dark:text-slate-400">Normal Travel Time</p>
+                <p className="text-base font-bold text-ink dark:text-slate-100 mt-0.5">{selected.normalTime}</p>
               </div>
-              <div className="bg-surface-subtle border border-surface-border/40 rounded-xl p-3.5">
-                <p className="text-[10px] font-medium text-ink-muted">Current Delay</p>
+              <div className="bg-surface-subtle border border-surface-border/40 rounded-xl p-3.5 dark:bg-slate-900/60 dark:border-slate-800/60">
+                <p className="text-[10px] font-medium text-ink-muted dark:text-slate-400">Current Delay</p>
                 <p className="text-base font-bold text-red-500 mt-0.5">+{selected.delayTime}</p>
               </div>
-              <div className="bg-primary-50 border border-primary-100 rounded-xl p-3.5">
-                <p className="text-[10px] font-medium text-primary-700">Net Time Savings</p>
-                <p className="text-base font-bold text-primary-600 mt-0.5">{selected.savingsTime}</p>
+              <div className="bg-primary-50 border border-primary-100 rounded-xl p-3.5 dark:bg-primary-900/20 dark:border-primary-800/50">
+                <p className="text-[10px] font-medium text-primary-700 dark:text-primary-400">Net Time Savings</p>
+                <p className="text-base font-bold text-primary-600 dark:text-primary-400 mt-0.5">{selected.savingsTime}</p>
               </div>
-              <div className="bg-surface-subtle border border-surface-border/40 rounded-xl p-3.5">
-                <p className="text-[10px] font-medium text-ink-muted">Total Route Length</p>
-                <p className="text-base font-bold text-ink mt-0.5">{selected.distance}</p>
+              <div className="bg-surface-subtle border border-surface-border/40 rounded-xl p-3.5 dark:bg-slate-900/60 dark:border-slate-800/60">
+                <p className="text-[10px] font-medium text-ink-muted dark:text-slate-400">Total Route Length</p>
+                <p className="text-base font-bold text-ink dark:text-slate-100 mt-0.5">{selected.distance}</p>
               </div>
             </div>
 
@@ -380,14 +380,14 @@ export default function CorridorsPage() {
 
             {/* Turn-by-Turn Steps */}
             <div className="space-y-3">
-              <h3 className="text-xs font-bold text-ink-muted uppercase tracking-wider">Turn-by-Turn Route Execution</h3>
+              <h3 className="text-xs font-bold text-ink-muted dark:text-slate-400 uppercase tracking-wider">Turn-by-Turn Route Execution</h3>
               <div className="grid grid-cols-1 gap-2.5">
                 {selected.steps.map((step, idx) => (
-                  <div key={idx} className="flex gap-3 bg-surface-subtle border border-surface-border/50 rounded-xl p-3.5">
-                    <div className="w-6 h-6 rounded-lg bg-primary-100 text-primary-700 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
+                  <div key={idx} className="flex gap-3 bg-surface-subtle border border-surface-border/50 rounded-xl p-3.5 dark:bg-slate-900/60 dark:border-slate-800/60">
+                    <div className="w-6 h-6 rounded-lg bg-primary-100 text-primary-700 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 dark:bg-primary-900/30 dark:text-primary-400">
                       {idx + 1}
                     </div>
-                    <p className="text-xs font-medium text-ink-secondary leading-relaxed">{step}</p>
+                    <p className="text-xs font-medium text-ink-secondary dark:text-slate-300 leading-relaxed">{step}</p>
                   </div>
                 ))}
               </div>
@@ -395,7 +395,7 @@ export default function CorridorsPage() {
 
             {/* Action Panel */}
             <div className="border-t border-surface-border pt-5 space-y-3.5">
-              <h3 className="text-xs font-bold text-ink-muted uppercase tracking-wider">Execute Response Actions</h3>
+              <h3 className="text-xs font-bold text-ink-muted dark:text-slate-400 uppercase tracking-wider">Execute Response Actions</h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <button
                   onClick={() => triggerAction('officer', 'Deployment Alert: 3 Traffic Patrol Units successfully dispatched.')}
