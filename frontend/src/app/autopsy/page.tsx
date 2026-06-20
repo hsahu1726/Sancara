@@ -37,7 +37,7 @@ export default function AutopsyPage() {
   return (
     <div className="space-y-7 animate-fade-in">
       <div className="page-header">
-        <h1 className="page-title">Cascade Autopsy</h1>
+        <h1 className="page-title">Response Replay</h1>
         <p className="page-desc">Find the exact decision window where intervention could have prevented escalation</p>
       </div>
 
@@ -54,7 +54,7 @@ export default function AutopsyPage() {
           </select>
         </div>
         <button onClick={runAutopsy} disabled={loading || !selectedId} className="btn-primary">
-          <Play size={16} /> {loading ? 'Analyzing...' : 'Run Cascade Autopsy'}
+          <Play size={16} /> {loading ? 'Analyzing...' : 'Run Response Replay'}
         </button>
       </div>
 
@@ -83,7 +83,7 @@ export default function AutopsyPage() {
 
           {result.autopsy ? (
             <>
-              {/* Autopsy Results */}
+              {/* Replay Results */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <AutopsyCard icon={Crosshair} value={result.autopsy.point_of_no_return_time}
                   label="Point of No Return" sub={`${result.autopsy.point_of_no_return_minutes} min after start`}

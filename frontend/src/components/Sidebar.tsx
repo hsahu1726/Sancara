@@ -15,7 +15,7 @@ const links = [
   { href: '/hotspots', label: 'Hotspots', icon: MapPin },
   { href: '/vulnerability', label: 'Vulnerability', icon: AlertTriangle },
   { href: '/similarity', label: 'Similarity', icon: Search },
-  { href: '/autopsy', label: 'Autopsy', icon: Crosshair },
+  { href: '/autopsy', label: 'Response Replay', icon: Crosshair },
   { href: '/corridors', label: 'Corridor Routes', icon: Map },
   { href: '/chatbot', label: 'AI Chatbot', icon: MessageSquare },
   { href: '/resources', label: 'Resources', icon: ClipboardList },
