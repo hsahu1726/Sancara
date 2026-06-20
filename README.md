@@ -24,6 +24,12 @@ graph TB
         Predict["Prediction Panel: Weather & Friction Inputs"]
         Detour["Bypass Maps: Corridor Diversions"]
         Copilot["Sancara Copilot: Chat Assistant"]
+        Broadcast["Kannada Public Broadcast Generator"]
+        Heatmap["Historical Hotspot Map"]
+        Planned["Planned Event Analysis"]
+        Simulator["What-If Simulator"]
+        Calendar["Historical Risk Calendar"]
+        Tour["Multi-Page Tour Guide"]
     end
 
     subgraph Service_Layer["Service Layer (FastAPI server)"]
@@ -81,6 +87,15 @@ src/
   hotspot_detection.py     DBSCAN spatial event clustering
   resources.py             Context-aware resource recommendation mappings
 frontend/                  Next.js Web Application
+  src/app/
+    broadcast/             ಕನ್ನಡ (Kannada) Public Broadcast Generator
+    heatmap/               Historical Hotspot Map (Leaflet raw coordinates)
+    planned/               Planned Event Analysis (breakdowns & peak times)
+    simulator/             What-If Scenario Simulator (side-by-side ML predictions)
+    calendar/              Historical Risk Calendar (with Monthly Summary sidebar)
+  src/components/
+    TourGuide.tsx          Interactive Multi-Page Tour Guide component
+    Sidebar.tsx            Responsive sidebar navigation component
 ```
 
 ---
@@ -99,6 +114,43 @@ graph TD
     H --> I[Dispatch Warnings: SMS/WhatsApp Alerts to Field Officers]
     I --> J[Post-Event Learning Loop: Log outcome & monitor drift]
 ```
+
+---
+
+## Key Features & Interactive Modules
+
+Sañcāra includes several diagnostic, forecasting, and simulation modules built on real ASTRAM dataset insights:
+
+### 1. 📻 ಕನ್ನಡ (Kannada) Public Broadcast Generator
+- **Path**: `frontend/src/app/broadcast`
+- Automatically constructs dual-language traffic advisories in **Kannada** and **English** for public broadcasting.
+- Integrates predicted congestion severity and recovery times directly into standard announcement templates, supporting one-click clipboard copying.
+
+### 2. 🗺️ Historical Hotspot Map
+- **Path**: `frontend/src/app/heatmap`
+- Renders an interactive Leaflet map plotting raw coordinates for historical traffic events across Bangalore.
+- Clicking any coordinate dot displays the exact location (Junction/Corridor) and the event cause.
+- Missing/invalid values (`nan` or `null`) are sanitized case-insensitively for clean layout presentation.
+
+### 3. 📊 Planned Event Analysis
+- **Path**: `frontend/src/app/planned`
+- Visualizes scheduling statistics and bottleneck distributions of **467 planned events** (311 constructions, 84 public events, 38 processions, 20 VIP movements, and 8 protests).
+- Analyzes peak-time impact distributions (e.g., peak starts at 21:00 for night shift construction) and ranks the top-affected junctions.
+
+### 4. 🎛️ What-If Cause/Corridor Simulator
+- **Path**: `frontend/src/app/simulator`
+- Compares two incident configurations side-by-side (e.g., comparing weather or corridor options).
+- Uses the XGBoost model backend to compute comparative severity levels, minutes to resolve, and cascading congestion risk.
+
+### 5. 📅 Historical Risk Calendar
+- **Path**: `frontend/src/app/calendar`
+- Features a daily heatmap grid displaying ASTRAM events from November 2023 through April 2024.
+- Includes a vertical **Monthly Summary** sidebar strip at the right side of the calendar, offering total event counts and daily average statistics for clean comparative analysis without scrolling.
+
+### 6. 🧭 Interactive Tour Guide
+- A premium, multi-page application tour guide activated by a prominent **floating blue oval button** in the top-right corner of the dashboard.
+- Points directly to relevant sidebar links for each feature, providing context and actionable instructions at every step.
+- Built without emojis for a clean, professional, enterprise-grade feel.
 
 ---
 
