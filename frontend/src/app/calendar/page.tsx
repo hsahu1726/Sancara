@@ -58,7 +58,7 @@ function getColor(count: number): string {
   if (ratio < 0.2) return 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300';
   if (ratio < 0.4) return 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-300';
   if (ratio < 0.6) return 'bg-orange-100 dark:bg-orange-900/40 text-orange-800 dark:text-orange-300';
-  if (ratio < 0.80) return 'bg-red-200 dark:bg-red-900/50 text-red-800 dark:text-red-300';
+  if (ratio < 0.8) return 'bg-red-200 dark:bg-red-900/50 text-red-800 dark:text-red-300';
   return 'bg-red-500 dark:bg-red-600 text-white';
 }
 
@@ -93,11 +93,10 @@ export default function CalendarPage() {
   const totalDays = Object.keys(RAW_COUNTS).length;
   const avgPerDay = (totalEvents / totalDays).toFixed(1);
   const busiestDay = Object.entries(RAW_COUNTS).sort((a, b) => b[1] - a[1])[0];
-  const quietestDay = Object.entries(RAW_COUNTS).sort((a, b) => a[1] - b[1])[0];
   const highDays = Object.values(RAW_COUNTS).filter(v => v >= 100).length;
 
   return (
-    <div className="space-y-7 animate-fade-in">
+    <div className="space-y-6 animate-fade-in">
       <div className="page-header">
         <h1 className="page-title">Historical Risk Calendar</h1>
         <p className="page-desc">Day-by-day event intensity across the ASTRAM dataset (Nov 2023 – Apr 2024) — {totalDays} days, {totalEvents.toLocaleString()} events</p>
@@ -111,158 +110,155 @@ export default function CalendarPage() {
           { label: 'Peak Day', value: busiestDay[1], sub: busiestDay[0], color: 'text-red-600 dark:text-red-400' },
           { label: 'Days ≥ 100 Events', value: highDays, color: 'text-orange-600 dark:text-orange-400' },
         ].map(s => (
-          <div key={s.label} className="bg-surface-subtle dark:bg-slate-900/60 border border-surface-border/40 dark:border-slate-800/60 rounded-xl p-3.5 text-center">
-            <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
+          <div key={s.label} className="bg-surface-subtle dark:bg-slate-900/60 border border-surface-border/40 dark:border-slate-800/60 rounded-xl p-3 text-center">
+            <p className={`text-xl font-bold ${s.color}`}>{s.value}</p>
             <p className="text-[10px] text-ink-muted dark:text-slate-400 font-medium mt-0.5">{s.label}</p>
             {s.sub && <p className="text-[9px] text-ink-muted dark:text-slate-500 mt-0.5">{s.sub}</p>}
           </div>
         ))}
       </div>
 
-      {/* Calendar */}
-      <div className="card space-y-4">
-        {/* Month nav */}
-        <div className="flex items-center justify-between">
-          <button onClick={() => setMonthIdx(i => Math.max(0, i - 1))} disabled={monthIdx === 0}
-            className="p-2 rounded-lg border border-surface-border dark:border-slate-700 hover:bg-surface-hover dark:hover:bg-slate-800 disabled:opacity-30 transition-colors">
-            <ChevronLeft size={16} className="text-ink-secondary dark:text-slate-400" />
-          </button>
-          <div className="text-center">
-            <h2 className="text-base font-bold text-ink dark:text-slate-100">{month.label}</h2>
-            <p className="text-xs text-ink-muted dark:text-slate-500">{month.days} days</p>
-          </div>
-          <button onClick={() => setMonthIdx(i => Math.min(MONTHS.length - 1, i + 1))} disabled={monthIdx === MONTHS.length - 1}
-            className="p-2 rounded-lg border border-surface-border dark:border-slate-700 hover:bg-surface-hover dark:hover:bg-slate-800 disabled:opacity-30 transition-colors">
-            <ChevronRight size={16} className="text-ink-secondary dark:text-slate-400" />
-          </button>
-        </div>
-
-        {/* Day labels */}
-        <div className="grid grid-cols-7 gap-1">
-          {DAY_LABELS.map(d => (
-            <div key={d} className="text-center text-[10px] font-semibold text-ink-muted dark:text-slate-500 py-1">{d}</div>
-          ))}
-        </div>
-
-        {/* Calendar grid */}
-        <div className="grid grid-cols-7 gap-1.5">
-          {calGrid.map((cell, i) => (
-            <button
-              key={i}
-              disabled={!cell.date}
-              onClick={() => cell.date && setSelected(cell.date === selected ? null : cell.date)}
-              className={`aspect-square rounded-lg flex flex-col items-center justify-center text-[10px] font-semibold transition-all duration-150 relative
-                ${!cell.date ? 'invisible' : ''}
-                ${cell.date ? getColor(cell.count) : ''}
-                ${cell.date === selected ? 'ring-2 ring-primary-500 ring-offset-1 dark:ring-offset-slate-900 scale-110 z-10' : ''}
-                ${cell.date && cell.count > 0 ? 'cursor-pointer hover:scale-105 hover:z-10' : 'cursor-default'}
-              `}
-              title={cell.date ? `${cell.date}: ${cell.count} events` : ''}
-            >
-              {cell.date && (
-                <>
-                  <span className="text-[9px] opacity-70">{new Date(cell.date + 'T00:00:00').getDate()}</span>
-                  {cell.count > 0 && <span className="font-bold text-[10px] leading-none">{cell.count}</span>}
-                </>
-              )}
-            </button>
-          ))}
-        </div>
-
-        {/* Legend */}
-        <div className="flex items-center gap-3 flex-wrap pt-2 border-t border-surface-border/40 dark:border-slate-800/40">
-          <span className="text-[10px] text-ink-muted dark:text-slate-500">Event intensity:</span>
-          {[
-            { label: 'Low', cls: 'bg-emerald-100 dark:bg-emerald-900/40' },
-            { label: 'Moderate', cls: 'bg-yellow-100 dark:bg-yellow-900/40' },
-            { label: 'Elevated', cls: 'bg-orange-100 dark:bg-orange-900/40' },
-            { label: 'High', cls: 'bg-red-200 dark:bg-red-900/50' },
-            { label: 'Critical', cls: 'bg-red-500 dark:bg-red-600' },
-          ].map(l => (
-            <div key={l.label} className="flex items-center gap-1.5">
-              <div className={`w-3 h-3 rounded ${l.cls}`} />
-              <span className="text-[10px] text-ink-muted dark:text-slate-500">{l.label}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Selected day detail */}
-      {selected && (
-        <div className="card border-primary-200 dark:border-primary-800/50 bg-primary-50/30 dark:bg-primary-950/10 space-y-3 animate-fade-in">
+      {/* Grid containing Calendar (left) and Summary Column (right) */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        {/* Calendar (3 cols) */}
+        <div className="lg:col-span-3 card space-y-4">
+          {/* Month nav */}
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <CalendarDays size={16} className="text-primary-500" />
-              <h3 className="text-sm font-bold text-ink dark:text-slate-100">{selected}</h3>
-              <span className={`badge text-[10px] ${
-                getRiskLabel(RAW_COUNTS[selected] || 0) === 'Critical' ? 'badge-critical' :
-                getRiskLabel(RAW_COUNTS[selected] || 0) === 'High' ? 'badge-high' :
-                getRiskLabel(RAW_COUNTS[selected] || 0) === 'Elevated' ? 'badge-medium' : 'badge-low'
-              }`}>
-                {getRiskLabel(RAW_COUNTS[selected] || 0)} Risk Day
-              </span>
+            <button onClick={() => setMonthIdx(i => Math.max(0, i - 1))} disabled={monthIdx === 0}
+              className="p-1.5 rounded-lg border border-surface-border dark:border-slate-700 hover:bg-surface-hover dark:hover:bg-slate-800 disabled:opacity-30 transition-colors">
+              <ChevronLeft size={14} className="text-ink-secondary dark:text-slate-400" />
+            </button>
+            <div className="text-center">
+              <h2 className="text-sm font-bold text-ink dark:text-slate-100">{month.label}</h2>
+              <p className="text-[10px] text-ink-muted dark:text-slate-500">{month.days} days</p>
             </div>
-            <button onClick={() => setSelected(null)} className="p-1 rounded hover:bg-surface-hover dark:hover:bg-slate-800">
-              <X size={14} className="text-ink-muted dark:text-slate-500" />
+            <button onClick={() => setMonthIdx(i => Math.min(MONTHS.length - 1, i + 1))} disabled={monthIdx === MONTHS.length - 1}
+              className="p-1.5 rounded-lg border border-surface-border dark:border-slate-700 hover:bg-surface-hover dark:hover:bg-slate-800 disabled:opacity-30 transition-colors">
+              <ChevronRight size={14} className="text-ink-secondary dark:text-slate-400" />
             </button>
           </div>
-          <div className="grid grid-cols-3 gap-3">
-            <div className="bg-surface-subtle dark:bg-slate-900/60 rounded-xl p-3 text-center border border-surface-border/40 dark:border-slate-800/60">
-              <p className="text-2xl font-bold text-ink dark:text-slate-100">{RAW_COUNTS[selected] || 0}</p>
-              <p className="text-[10px] text-ink-muted dark:text-slate-400">Total Events</p>
-            </div>
-            <div className="bg-surface-subtle dark:bg-slate-900/60 rounded-xl p-3 text-center border border-surface-border/40 dark:border-slate-800/60">
-              <p className="text-2xl font-bold text-ink dark:text-slate-100">
-                {((RAW_COUNTS[selected] || 0) / parseFloat(avgPerDay) * 100).toFixed(0)}%
-              </p>
-              <p className="text-[10px] text-ink-muted dark:text-slate-400">vs Daily Average</p>
-            </div>
-            <div className="bg-surface-subtle dark:bg-slate-900/60 rounded-xl p-3 text-center border border-surface-border/40 dark:border-slate-800/60">
-              <p className="text-2xl font-bold text-ink dark:text-slate-100">
-                {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date(selected + 'T00:00:00').getDay()]}
-              </p>
-              <p className="text-[10px] text-ink-muted dark:text-slate-400">Day of Week</p>
+
+          {/* Day labels */}
+          <div className="grid grid-cols-7 gap-1">
+            {DAY_LABELS.map(d => (
+              <div key={d} className="text-center text-[10px] font-semibold text-ink-muted dark:text-slate-500 py-0.5">{d}</div>
+            ))}
+          </div>
+
+          {/* Calendar grid (reduced size for better density) */}
+          <div className="grid grid-cols-7 gap-1">
+            {calGrid.map((cell, i) => (
+              <button
+                key={i}
+                disabled={!cell.date}
+                onClick={() => cell.date && setSelected(cell.date === selected ? null : cell.date)}
+                className={`aspect-square rounded-lg flex flex-col items-center justify-center text-[10px] font-semibold transition-all duration-150 relative max-h-[46px]
+                  ${!cell.date ? 'invisible' : ''}
+                  ${cell.date ? getColor(cell.count) : ''}
+                  ${cell.date === selected ? 'ring-2 ring-primary-500 ring-offset-1 dark:ring-offset-slate-900 scale-105 z-10' : ''}
+                  ${cell.date && cell.count > 0 ? 'cursor-pointer hover:scale-105 hover:z-10' : 'cursor-default'}
+                `}
+                title={cell.date ? `${cell.date}: ${cell.count} events` : ''}
+              >
+                {cell.date && (
+                  <>
+                    <span className="text-[8px] opacity-70">{new Date(cell.date + 'T00:00:00').getDate()}</span>
+                    {cell.count > 0 && <span className="font-bold text-[9px] leading-none mt-0.5">{cell.count}</span>}
+                  </>
+                )}
+              </button>
+            ))}
+          </div>
+
+          {/* Legend */}
+          <div className="flex items-center gap-2.5 flex-wrap pt-2 border-t border-surface-border/40 dark:border-slate-800/40">
+            <span className="text-[10px] text-ink-muted dark:text-slate-500">Event intensity:</span>
+            {[
+              { label: 'Low', cls: 'bg-emerald-100 dark:bg-emerald-900/40' },
+              { label: 'Moderate', cls: 'bg-yellow-100 dark:bg-yellow-900/40' },
+              { label: 'Elevated', cls: 'bg-orange-100 dark:bg-orange-900/40' },
+              { label: 'High', cls: 'bg-red-200 dark:bg-red-900/50' },
+              { label: 'Critical', cls: 'bg-red-500 dark:bg-red-600' },
+            ].map(l => (
+              <div key={l.label} className="flex items-center gap-1.5">
+                <div className={`w-2.5 h-2.5 rounded ${l.cls}`} />
+                <span className="text-[10px] text-ink-muted dark:text-slate-500">{l.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Right column: Monthly Summary + Day detail strip */}
+        <div className="space-y-4">
+          <div className="card space-y-3">
+            <h2 className="text-xs font-bold text-ink dark:text-slate-100 flex items-center gap-1.5 uppercase tracking-wider">
+              <TrendingUp size={14} className="text-primary-500" /> Monthly Summary
+            </h2>
+            <div className="flex flex-col gap-1.5">
+              {MONTHS.map((m, idx) => {
+                const monthEvents = Object.entries(RAW_COUNTS)
+                  .filter(([k]) => k.startsWith(m.key))
+                  .reduce((s, [, v]) => s + v, 0);
+                const isActive = idx === monthIdx;
+                return (
+                  <button
+                    key={m.key}
+                    onClick={() => setMonthIdx(idx)}
+                    className={`rounded-xl p-2.5 flex items-center justify-between border text-left transition-all ${
+                      isActive
+                        ? 'bg-primary-50 dark:bg-primary-950/20 border-primary-300 dark:border-primary-700/50'
+                        : 'bg-surface-subtle dark:bg-slate-900/40 border-surface-border/40 dark:border-slate-800/60 hover:border-surface-border dark:hover:border-slate-700'
+                    }`}
+                  >
+                    <div>
+                      <p className="text-[10px] font-bold text-ink dark:text-slate-200">
+                        {m.label.split(' ')[0]}
+                      </p>
+                      <p className="text-[9px] text-ink-muted dark:text-slate-500">
+                        {m.label.split(' ')[1]}
+                      </p>
+                    </div>
+                    <p className={`text-xs font-bold ${isActive ? 'text-primary-600 dark:text-primary-400' : 'text-ink dark:text-slate-100'}`}>
+                      {monthEvents.toLocaleString()}
+                    </p>
+                  </button>
+                );
+              })}
             </div>
           </div>
-          {(RAW_COUNTS[selected] || 0) === 250 && (
-            <div className="flex items-center gap-2 bg-red-50 dark:bg-red-950/20 rounded-xl p-3 border border-red-100 dark:border-red-900/40">
-              <AlertTriangle size={14} className="text-red-500 shrink-0" />
-              <p className="text-xs text-red-700 dark:text-red-400">⚠️ Dataset anomaly: 2024-03-07 has 250 records — likely a bulk data migration or system backfill event.</p>
+
+          {/* Selected day detail inside right column (maintains calendar size static, no layout shift) */}
+          {selected && (
+            <div className="card border-primary-200 dark:border-primary-800/50 bg-primary-50/30 dark:bg-primary-950/10 space-y-3 animate-fade-in">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <CalendarDays size={14} className="text-primary-500" />
+                  <h3 className="text-xs font-bold text-ink dark:text-slate-100">{selected}</h3>
+                </div>
+                <button onClick={() => setSelected(null)} className="p-1 rounded hover:bg-surface-hover dark:hover:bg-slate-800">
+                  <X size={12} className="text-ink-muted dark:text-slate-500" />
+                </button>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="bg-surface-subtle dark:bg-slate-900/60 rounded-xl p-2 text-center border border-surface-border/40 dark:border-slate-800/60">
+                  <p className="text-base font-bold text-ink dark:text-slate-100">{RAW_COUNTS[selected] || 0}</p>
+                  <p className="text-[9px] text-ink-muted dark:text-slate-400">Total Events</p>
+                </div>
+                <div className="bg-surface-subtle dark:bg-slate-900/60 rounded-xl p-2 text-center border border-surface-border/40 dark:border-slate-800/60">
+                  <p className="text-base font-bold text-ink dark:text-slate-100">
+                    {((RAW_COUNTS[selected] || 0) / parseFloat(avgPerDay) * 100).toFixed(0)}%
+                  </p>
+                  <p className="text-[9px] text-ink-muted dark:text-slate-400">vs Average</p>
+                </div>
+              </div>
+              {(RAW_COUNTS[selected] || 0) === 250 && (
+                <div className="flex items-start gap-1.5 bg-red-50 dark:bg-red-950/20 rounded-xl p-2 border border-red-100 dark:border-red-900/40">
+                  <AlertTriangle size={12} className="text-red-500 shrink-0 mt-0.5" />
+                  <p className="text-[9px] text-red-700 dark:text-red-400">Anomaly: 250 records (backfill).</p>
+                </div>
+              )}
             </div>
           )}
-        </div>
-      )}
-
-      {/* Month-over-month summary */}
-      <div className="card space-y-4">
-        <h2 className="text-sm font-bold text-ink dark:text-slate-100 flex items-center gap-2">
-          <TrendingUp size={16} className="text-primary-500" /> Monthly Summary
-        </h2>
-        <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
-          {MONTHS.map((m, idx) => {
-            const monthEvents = Object.entries(RAW_COUNTS)
-              .filter(([k]) => k.startsWith(m.key))
-              .reduce((s, [, v]) => s + v, 0);
-            const isActive = idx === monthIdx;
-            return (
-              <button
-                key={m.key}
-                onClick={() => setMonthIdx(idx)}
-                className={`rounded-xl p-3 text-center border transition-all ${
-                  isActive
-                    ? 'bg-primary-50 dark:bg-primary-950/20 border-primary-300 dark:border-primary-700/50'
-                    : 'bg-surface-subtle dark:bg-slate-900/40 border-surface-border/40 dark:border-slate-800/60 hover:border-surface-border dark:hover:border-slate-700'
-                }`}
-              >
-                <p className={`text-lg font-bold ${isActive ? 'text-primary-600 dark:text-primary-400' : 'text-ink dark:text-slate-100'}`}>
-                  {monthEvents}
-                </p>
-                <p className="text-[9px] text-ink-muted dark:text-slate-500 mt-0.5">
-                  {m.label.split(' ')[0].slice(0, 3)} {m.label.split(' ')[1].slice(2)}
-                </p>
-              </button>
-            );
-          })}
         </div>
       </div>
     </div>
