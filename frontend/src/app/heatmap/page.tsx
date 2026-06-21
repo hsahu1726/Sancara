@@ -90,8 +90,9 @@ export default function HeatmapPage() {
         zoom: 11,
         zoomControl: true,
       });
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap',
+      L.tileLayer('https://tile.mappls.com/map/raster_tile/xyz/{z}/{x}/{y}.png?access_token=houxvvsdeyhzayhesqprsgmcewprhrziqbpt', {
+        attribution: '© Mappls',
+        maxZoom: 18,
         opacity: 0.85,
       }).addTo(map);
       leafletRef.current = { map, L };
