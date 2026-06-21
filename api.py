@@ -48,16 +48,106 @@ def _load_all():
     _cache['sim_vec'], _cache['sim_mat'], _cache['sim_data'] = load_similarity_engine()
     _cache['hotspots'] = load_hotspot_models()
 
-    # Precompute and cache feature engineered dataset to avoid 40s lag on requests
+    # Load precomputed feature engineered dataset if available, otherwise compute it
     df = _cache['df']
-    cmap = _cache['encoders'].get('cmap')
-    _, targets, _, _ = engineer_features(df, is_train=True, centrality_map=cmap)
-    df_feat = df.copy()
-    df_feat['resolution_minutes'] = targets['resolution_minutes']
-    df_feat['impact_level'] = targets['impact_level']
-    df_feat['priority_High'] = (df_feat['priority'].astype(str).str.lower().str.strip() == 'high').astype(int)
-    df_feat['requires_road_closure'] = df_feat['requires_road_closure'].fillna(0).astype(int)
+    df_feat_path = os.path.join(DATA_DIR, 'df_feat.pkl')
+    if os.path.exists(df_feat_path):
+        df_feat = joblib.load(df_feat_path)
+    else:
+        cmap = _cache['encoders'].get('cmap')
+        _, targets, _, _ = engineer_features(df, is_train=True, centrality_map=cmap)
+        df_feat = df.copy()
+        df_feat['resolution_minutes'] = targets['resolution_minutes']
+        df_feat['impact_level'] = targets['impact_level']
+        df_feat['priority_High'] = (df_feat['priority'].astype(str).str.lower().str.strip() == 'high').astype(int)
+        df_feat['requires_road_closure'] = df_feat['requires_road_closure'].fillna(0).astype(int)
+        try:
+            joblib.dump(df_feat, df_feat_path)
+        except Exception:
+            pass
     _cache['df_feat'] = df_feat
+
+    # 1. Precompute Dashboard Stats
+    total = len(df)
+    active = int((df['status'] == 'active').sum())
+    high_impact = int((df_feat['impact_level'] >= 2).sum())
+
+    vuln_path = os.path.join(DATA_DIR, 'junction_vulnerability.csv')
+    if os.path.exists(vuln_path):
+        vuln = pd.read_csv(vuln_path)
+        top_junction = vuln.iloc[0]['junction'] if len(vuln) > 0 else "N/A"
+    else:
+        top_junction = "N/A"
+
+    dates = pd.to_datetime(df['start_datetime'], utc=True, errors='coerce')
+    daily = dates.dt.date.value_counts().sort_index()
+
+    metrics_path = os.path.join(MODELS_DIR, 'metrics.json')
+    metrics = {}
+    if os.path.exists(metrics_path):
+        try:
+            with open(metrics_path) as f:
+                metrics = json.load(f)
+        except Exception:
+            pass
+
+    _cache['stats'] = {
+        "total_events": total,
+        "active_events": active,
+        "high_impact_events": high_impact,
+        "top_junction": top_junction,
+        "junctions_count": int(df['junction'].nunique()),
+        "zones_count": int(df['zone'].nunique()),
+        "event_type_distribution": df['event_type'].value_counts().to_dict(),
+        "impact_distribution": {str(k): int(v) for k, v in df_feat['impact_level'].value_counts().sort_index().to_dict().items()},
+        "cause_distribution": df['event_cause'].value_counts().head(8).to_dict(),
+        "corridor_distribution": df['corridor'].value_counts().head(10).to_dict(),
+        "time_series": {str(k): int(v) for k, v in daily.head(60).items()},
+        "metrics": metrics,
+    }
+
+    # 2. Precompute Events Geo (2000 limit)
+    merged = df[['id','latitude','longitude','event_cause','start_datetime','junction','corridor','zone']].copy()
+    merged['impact_level'] = df_feat['impact_level'].values
+    merged = merged.dropna(subset=['latitude','longitude'])
+    merged = merged[(merged['latitude'] != 0) & (merged['longitude'] != 0)]
+    subset_geo = merged.head(2000)
+    events_geo = []
+    for _, row in subset_geo.iterrows():
+        events_geo.append({
+            'id': _safe_str(row.get('id', '')),
+            'latitude': float(row['latitude']),
+            'longitude': float(row['longitude']),
+            'event_cause': _safe_str(row.get('event_cause', '')),
+            'start_datetime': _safe_str(row.get('start_datetime', '')),
+            'junction': _safe_str(row.get('junction', '')),
+            'corridor': _safe_str(row.get('corridor', '')),
+            'zone': _safe_str(row.get('zone', '')),
+            'impact_level': int(row.get('impact_level', 1)),
+        })
+    _cache['events_geo_2000'] = {'events': events_geo}
+
+    # 3. Precompute default events list (100 limit)
+    subset_ev = df_feat.head(100)
+    events_100 = []
+    for _, row in subset_ev.iterrows():
+        res_mins = row.get('resolution_minutes', 0)
+        if pd.isna(res_mins) or np.isinf(res_mins) if isinstance(res_mins, float) else False:
+            res_mins = 0
+        imp_lvl = row.get('impact_level', 1)
+        if pd.isna(imp_lvl) or np.isinf(imp_lvl) if isinstance(imp_lvl, float) else False:
+            imp_lvl = 1
+        events_100.append({
+            "id": _safe_str(row.get('id', '')),
+            "event_cause": _safe_str(row.get('event_cause', '')),
+            "corridor": _safe_str(row.get('corridor', '')),
+            "junction": _safe_str(row.get('junction', '')),
+            "resolution_minutes": round(float(res_mins), 1),
+            "priority": _safe_str(row.get('priority', '')),
+            "impact_level": int(imp_lvl),
+            "impact_label": _get_impact_label(int(imp_lvl)),
+        })
+    _cache['events_100'] = {"events": events_100}
 
     return _cache
 
@@ -151,41 +241,7 @@ def health():
 @app.get("/api/dashboard/stats")
 def dashboard_stats():
     c = _load_all()
-    df = c['df']
-    df_feat = c['df_feat']
-
-    total = len(df)
-    active = int((df['status'] == 'active').sum())
-    high_impact = int((df_feat['impact_level'] >= 2).sum())
-
-    vuln_path = os.path.join(DATA_DIR, 'junction_vulnerability.csv')
-    if os.path.exists(vuln_path):
-        vuln = pd.read_csv(vuln_path)
-        top_junction = vuln.iloc[0]['junction'] if len(vuln) > 0 else "N/A"
-    else:
-        top_junction = "N/A"
-
-    dates = pd.to_datetime(df['start_datetime'], utc=True, errors='coerce')
-    daily = dates.dt.date.value_counts().sort_index()
-
-    metrics_path = os.path.join(MODELS_DIR, 'metrics.json')
-    metrics = {}
-    if os.path.exists(metrics_path):
-        with open(metrics_path) as f:
-            metrics = json.load(f)
-
-    return {
-        "total_events": total, "active_events": active,
-        "high_impact_events": high_impact, "top_junction": top_junction,
-        "junctions_count": int(df['junction'].nunique()),
-        "zones_count": int(df['zone'].nunique()),
-        "event_type_distribution": df['event_type'].value_counts().to_dict(),
-        "impact_distribution": {str(k): int(v) for k, v in df_feat['impact_level'].value_counts().sort_index().to_dict().items()},
-        "cause_distribution": df['event_cause'].value_counts().head(8).to_dict(),
-        "corridor_distribution": df['corridor'].value_counts().head(10).to_dict(),
-        "time_series": {str(k): int(v) for k, v in daily.head(60).items()},
-        "metrics": metrics,
-    }
+    return c['stats']
 
 
 @app.get("/api/dashboard/vulnerability")
@@ -289,6 +345,8 @@ def get_hotspots(cause: Optional[str] = None):
 @app.get("/api/events")
 def get_events(limit: int = 100):
     c = _load_all()
+    if limit == 100:
+        return c['events_100']
     df_feat = c['df_feat']
 
     subset = df_feat.head(limit)
@@ -399,6 +457,8 @@ def get_resources(input_data: ResourceInput):
 @app.get("/api/events/geo")
 def get_events_geo(limit: int = 2000):
     c = _load_all()
+    if limit == 2000:
+        return c['events_geo_2000']
     df = c['df']
     df_feat = c['df_feat']
     merged = df[['id','latitude','longitude','event_cause','start_datetime','junction','corridor','zone']].copy()

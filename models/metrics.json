@@ -4,9 +4,9 @@
   "test_samples": 1635,
   "impact": {
     "name": "Impact Classifier",
-    "accuracy": 0.7131498470948012,
-    "balanced_accuracy": 0.6318377192982456,
-    "macro_f1": 0.6175510867935577,
+    "accuracy": 0.7155963302752294,
+    "balanced_accuracy": 0.6376119711042312,
+    "macro_f1": 0.6233797818934965,
     "confusion_matrix": [
       [
         264,
@@ -16,74 +16,74 @@
       ],
       [
         122,
-        782,
-        7,
+        784,
+        5,
         1
       ],
       [
         6,
-        246,
-        51,
-        20
+        249,
+        50,
+        18
       ],
       [
         0,
-        12,
-        44,
-        69
+        11,
+        42,
+        72
       ]
     ],
     "majority_baseline": 0.5577981651376147,
-    "accuracy_reliable_subset": 0.7342047930283224
+    "accuracy_reliable_subset": 0.7363834422657952
   },
   "duration_prolonged": {
     "name": "Prolonged-Duration Classifier (>60min)",
-    "accuracy": 0.5403050108932462,
-    "balanced_accuracy": 0.4907946514616126,
-    "macro_f1": 0.4853412406140896,
+    "accuracy": 0.5337690631808278,
+    "balanced_accuracy": 0.48979079665917125,
+    "macro_f1": 0.4866952341137124,
     "confusion_matrix": [
       [
-        199,
-        84
+        192,
+        91
       ],
       [
-        127,
-        49
+        123,
+        53
       ]
     ],
     "majority_baseline": 0.616557734204793,
-    "roc_auc": 0.4809367973016383,
-    "pr_auc": 0.37802218293857487,
+    "roc_auc": 0.47279553485383874,
+    "pr_auc": 0.37303111967561997,
     "positive_rate": 0.38344226579520696,
-    "cv_auc_in_distribution": 0.612765439483945,
+    "cv_auc_in_distribution": 0.6088515732101352,
     "note": "Duration is the hard/weak target: in-distribution AUC ~0.59, near-random out-of-time. Lean on AFT median + cascade risk."
   },
   "resolution": {
     "name": "AFT Resolution",
-    "mae": 278.2764367308761,
-    "medae": 59.98585405211588,
+    "mae": 251.59230664986268,
+    "medae": 60.20102872626953,
     "n": 457
   },
   "cascade": {
     "name": "Cascade Classifier",
-    "accuracy": 0.908256880733945,
-    "balanced_accuracy": 0.8517761308458982,
-    "macro_f1": 0.7624154286112854,
+    "accuracy": 0.9076452599388379,
+    "balanced_accuracy": 0.8444160490672119,
+    "macro_f1": 0.759035262632385,
     "confusion_matrix": [
       [
-        1383,
-        122
+        1384,
+        121
       ],
       [
-        28,
-        102
+        30,
+        100
       ]
     ],
     "majority_baseline": 0.9204892966360856,
-    "roc_auc": 0.9061104012266803,
-    "pr_auc": 0.6376736119909969,
+    "roc_auc": 0.8984819831331459,
+    "pr_auc": 0.6005741814106955,
     "positive_rate": 0.07951070336391437,
-    "brier_raw": 0.08584954589605331,
-    "brier_calibrated": 0.0380580872297287
+    "brier_raw": 0.07089899480342865,
+    "brier_calibrated": 0.03657703846693039
   }
 }

@@ -163,6 +163,7 @@ def main():
     df_feat['requires_road_closure'] = df_feat['requires_road_closure'].fillna(0).astype(int)
     vuln = compute_junction_vulnerability(df_feat, centrality_df=centrality)
     vuln.to_csv(os.path.join(DATA_DIR, 'junction_vulnerability.csv'), index=False)
+    joblib.dump(df_feat, os.path.join(DATA_DIR, 'df_feat.pkl'))
     print(f"  vulnerability for {len(vuln)} junctions; top: {vuln.iloc[0]['junction']} "
           f"({vuln.iloc[0]['risk_score']}/10)")
 
