@@ -49,7 +49,10 @@ body {
   .dark, .dark * {
     color: #ffffff !important;
   }
-  .dark .leaflet-control-zoom a {
+  .leaflet-control-zoom a,
+  .leaflet-control-zoom a:hover,
+  .leaflet-bar a,
+  .leaflet-bar a:hover {
     color: #1a1a1a !important;
   }
   .dark input::placeholder,
