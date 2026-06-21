@@ -49,6 +49,9 @@ body {
   .dark, .dark * {
     color: #ffffff !important;
   }
+  .dark .leaflet-control-zoom a {
+    color: #1a1a1a !important;
+  }
   .dark input::placeholder,
   .dark textarea::placeholder {
     color: rgba(255, 255, 255, 0.4) !important;
