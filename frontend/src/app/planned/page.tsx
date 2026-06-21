@@ -143,7 +143,16 @@ export default function PlannedPage() {
                     <Cell key={i} fill={entry.color} />
                   ))}
                 </Pie>
-                <Tooltip formatter={(v: any) => [`${v} events`, '']} />
+                <Tooltip
+                  contentStyle={{
+                    background: '#000000',
+                    border: '1px solid #27272a',
+                    borderRadius: '10px',
+                    color: '#ffffff',
+                  }}
+                  itemStyle={{ color: '#ffffff' }}
+                  formatter={(v: any, name: any) => [`${v} events`, name]}
+                />
               </PieChart>
             </ResponsiveContainer>
             <div className="flex-1 space-y-2">
