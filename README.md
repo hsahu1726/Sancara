@@ -158,7 +158,7 @@ Sañcāra features clean temporal splitting (Train: Nov 2023 – Mar 2024; Held-
 
 ## Tech Stack
 
-- **Frontend:** Next.js 14, React 18, Tailwind CSS, Recharts, Leaflet Maps (supports MapmyIndia / Mappls raster tile layers).
+- **Frontend:** Next.js 14, React 18, Tailwind CSS, Recharts, Leaflet Maps, MapmyIndia (Mappls) Web JS SDK.
 - **Backend API:** FastAPI, Uvicorn, Pydantic.
 - **Analytics & ML:** XGBoost, Scikit-Learn, Pandas, NumPy, NetworkX.
 
@@ -201,7 +201,6 @@ npm run dev
 - **Advanced Survival Estimators:** Transitioning from parametric AFT to Kaplan-Meier or Cox Proportional Hazards curves categorized by incident causes.
 - **OSMnx Graph Integration:** Importing full OpenStreetMap road meshes to enable accurate edge-weight routing.
 - **LLM Dispatcher Assistant (Sancara Copilot):** Grounding Sancara Copilot on live model predictions via Retrieval-Augmented Generation (RAG).
-- **MapmyIndia SDK Integration:** Native vector mapping and real-time traffic layers integration via MapmyIndia (Mappls) Web JS SDK v3.0.
 - **Urban Friction Index Expansion:** Integrating enforcement and illegal parking intelligence (Theme 1) directly into the prediction loops.
 - **Reinforcement Learning Routing:** Optimizing detour configurations dynamically.
 
