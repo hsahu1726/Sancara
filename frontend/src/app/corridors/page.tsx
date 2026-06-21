@@ -219,9 +219,8 @@ export default function CorridorsPage() {
           attributionControl: false 
         }).setView(${JSON.stringify(selected.congestedCenter)}, 13);
         
-        L.tileLayer('https://tile.mappls.com/map/raster_tile/xyz/{z}/{x}/{y}.png?access_token=houxvvsdeyhzayhesqprsgmcewprhrziqbpt', {
-          maxZoom: 18,
-          attribution: '© Mappls'
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+          maxZoom: 20
         }).addTo(map);
 
         L.control.zoom({ position: 'bottomright' }).addTo(map);
