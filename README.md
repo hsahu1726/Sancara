@@ -8,6 +8,8 @@
 
 **Sañcāra** is an AI-powered urban mobility operations platform designed for traffic management centers. Using network analytics, corridor intelligence, and resource planning models trained on **8,173 historical Bengaluru traffic events**, it helps operators anticipate disruption, plan diversion routes, and optimize field deployments to restore mobility faster.
 
+**Live Deployed Prototype:** [sancara-flipkart.vercel.app](https://sancara-flipkart.vercel.app/)
+
 
 
 ---
