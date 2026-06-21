@@ -209,7 +209,7 @@ export default function PredictPage() {
 
               <div className="card space-y-4">
                 <h3 className="text-sm font-semibold flex items-center gap-2">
-                  <Radio size={16} className="text-primary-500 animate-pulse" /> Communications Protocol Dispatch <span className="text-[10px] font-normal text-ink-muted border border-surface-border dark:border-slate-850 rounded px-1.5 py-0.5">Simulated Preview</span>
+                  <Radio size={16} className="text-primary-500 animate-pulse" /> Communications Protocol Dispatch <span className="text-[10px] font-normal text-ink-muted border border-surface-border dark:border-slate-800 rounded px-1.5 py-0.5">Simulated Preview</span>
                 </h3>
                 <p className="text-xs text-ink-secondary leading-relaxed">Broadcast warnings, alerts, and detour paths to emergency channels and public APIs.</p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">

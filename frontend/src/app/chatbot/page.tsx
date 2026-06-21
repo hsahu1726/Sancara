@@ -222,8 +222,8 @@ export default function ChatbotPage() {
                   {msg.cards && msg.cards.length > 0 && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
                       {msg.cards.map((card, cIdx) => (
-                        <div key={cIdx} className="bg-white border border-surface-border shadow-card rounded-xl p-4 space-y-2.5 dark:bg-slate-850 dark:border-slate-800">
-                          <h4 className="text-xs font-bold text-ink dark:text-slate-50 flex items-center gap-1.5 border-b border-surface-border dark:border-slate-800 pb-2">
+                        <div key={cIdx} className="bg-white border border-surface-border shadow-card rounded-xl p-4 space-y-2.5 dark:bg-slate-800 dark:border-slate-700">
+                          <h4 className="text-xs font-bold text-ink dark:text-slate-50 flex items-center gap-1.5 border-b border-surface-border dark:border-slate-700 pb-2">
                             {card.type === 'alert' && <ShieldAlert size={14} className="text-red-500" />}
                             {card.type === 'resources' && <ClipboardList size={14} className="text-primary-500" />}
                             {card.type === 'diversion' && <Navigation size={14} className="text-emerald-500" />}
