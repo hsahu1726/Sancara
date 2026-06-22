@@ -19,7 +19,7 @@
 Sañcāra uses a decoupled client-server architecture. The Next.js client interacts with the FastAPI backend via REST API endpoints.
 
 ```mermaid
-graph TB
+graph LR
     subgraph Presentation_Layer["Presentation Layer (Next.js client)"]
         UI["Next.js Web Interface"]
         Overview["Dashboard KPI & Area Charts"]
@@ -32,12 +32,26 @@ graph TB
         Simulator["What-If Simulator"]
         Calendar["Historical Risk Calendar"]
         Tour["Multi-Page Tour Guide"]
+
+        UI --> Overview
+        UI --> Predict
+        UI --> Detour
+        UI --> Copilot
+        UI --> Broadcast
+        UI --> Heatmap
+        UI --> Planned
+        UI --> Simulator
+        UI --> Calendar
+        UI --> Tour
     end
 
     subgraph Service_Layer["Service Layer (FastAPI server)"]
         Router["FastAPI Application"]
         Pydantic["Pydantic Input Validators"]
         CORS["CORS Middleware Configuration"]
+
+        Router --> Pydantic
+        Router --> CORS
     end
 
     subgraph Analytics_Layer["Analytics & ML Engine"]
@@ -47,6 +61,8 @@ graph TB
         NetX["NetworkX Corridor Route Graphs"]
         Replay["Response Replay counterfactuals"]
         Recovery["Expected Recovery Horizon Estimator"]
+
+        FE --> XG & Calib & NetX & Replay & Recovery
     end
 
     subgraph Data_Layer["Data & Persistence Layer"]
@@ -60,10 +76,14 @@ graph TB
         WhatsApp["WhatsApp Alert Dispatcher"]
     end
 
+    %% Core Data & Control Flows
     UI --> Router
-    Router --> Pydantic
+    Predict --> Router
+    Simulator --> Router
+    Copilot --> Router
+    
     Pydantic --> FE
-    FE --> XG & Calib & NetX & Replay & Recovery
+    
     XG --> Models
     NetX & Replay --> DB
     Router --> Logs
