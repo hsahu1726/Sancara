@@ -5,11 +5,39 @@ import pickle
 import joblib
 import pandas as pd
 import numpy as np
+import asyncio
+import logging
+import urllib.request
 from datetime import datetime, timedelta
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional, List
+
+logger = logging.getLogger("keepalive")
+
+
+def _ping(url: str) -> None:
+    try:
+        with urllib.request.urlopen(url, timeout=10) as resp:
+            logger.info("keepalive ping %s -> %s", url, resp.status)
+    except Exception as e:
+        logger.warning("keepalive ping failed: %s", e)
+
+
+async def run_keepalive() -> None:
+    url = os.environ.get("SELF_PING_URL")
+    if not url:
+        return
+    health_url = url.rstrip("/") + "/api/health"
+    # Delay first ping to give uvicorn/FastAPI startup time to finish
+    await asyncio.sleep(30)
+    loop = asyncio.get_running_loop()
+    interval = int(os.environ.get("SELF_PING_INTERVAL_SECONDS", 600))
+    while True:
+        await loop.run_in_executor(None, _ping, health_url)
+        await asyncio.sleep(interval)
+
 
 from src.feature_engineering import engineer_features
 from src.models import load_model, predict_resolution, predict_cascade_proba
@@ -155,6 +183,8 @@ def _load_all():
 @app.on_event("startup")
 def startup_event():
     _load_all()
+    # Start the keepalive loop in the background
+    asyncio.create_task(run_keepalive())
 
 
 def _safe_val(v, default=0):
