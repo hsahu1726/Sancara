@@ -183,11 +183,42 @@ Sañcāra includes thirteen core features and diagnostic modules designed to sup
 
 ## ML Pipeline
 
-Sañcāra features clean temporal splitting (Train: Nov 2023 – Mar 2024; Held-out Test: Mar – Apr 2024).
+Sañcāra’s machine learning and feature engineering pipeline is designed for high statistical rigor, leakage prevention, and robust handling of corrupt/censored real-world traffic logs.
 
-- **Expected Recovery Horizon:** Uses Accelerated Failure Time (AFT) survival regression (`survival:aft`) to model true clearance times while accounting for right-censored active events.
-- **Calibrated Disruption Probability:** Employs Isotonic Calibration to reduce the Brier score to `0.038`, matching predicted risks to actual frequencies.
-- **Explainability:** Surfaced via local tree-SHAP value contributions directly inside the dashboard.
+### 1. Chronological & Leakage-Safe Splits
+To replicate true production deployment, we avoid random splitting (which causes future data to leak into past predictions). We enforce a strict **chronological split**:
+* **Training Set:** November 2023 – March 2024 (80% chronological split)
+* **Held-out Test Set:** March 2024 – April 2024 (20% honest evaluation)
+
+All feature scalers, encoders, and target encodings (using Bayesian target smoothing with `TE_SMOOTHING = 10.0`) are fitted **only** on the training slice, then applied to transform the test slice. Columns containing target indicators, such as event `status`, are dropped to prevent target leakage.
+
+---
+
+### 2. Core Model Architecture & Techniques
+
+#### 🪵 AFT Survival Regression (Expected Recovery Horizon)
+* **The Problem:** In real-world ASTRAM logs, true resolution times (`resolved_datetime`) are missing or heavily right-censored. Over 90% of events rely on administrative closes (`closed_datetime`), which averages 11.6 days after starting due to batch closure. Training standard regressors directly on these records severely skews predictions.
+* **The Solution:** We model traffic incident recovery using survival analysis. Administrative closes are treated as **interval-censored** upper bounds (resolution happened somewhere in the interval `(1, closed_minutes]`) and active records as **right-censored** (clearance will take *at least* the elapsed time). We train an **XGBoost Accelerated Failure Time (AFT) Regressor (`survival:aft`)** on these calculated bounds (`y_lower`, `y_upper`) to predict expected clearance times with low error.
+
+#### 🎯 Outcome-Grounded Composite Triage (Impact Classifier)
+* **The Problem:** Historical records lack ground-truth severity indicators in ~70% of cases, defaulting 61% of raw rows to a generic "Medium" label.
+* **The Solution:** We formulate a learnable **composite severity index (0 to 3)**. The index weights known operational variables (priority, road closures, peak hour status, corridor classifications) and nudges the score with the observed duration band *only* on reliable, uncensored events. Impeded rows are downweighted in training using a custom sample-weighting scheme. An **XGBoost Multi-Class Classifier** learns to bucket incidents into low, medium, high, or critical impact.
+
+#### 🛡️ Calibrated Escalation Risk (Cascade Classifier)
+* **The Problem:** Raw machine learning probability scores (e.g. "72% cascade chance") are often uncalibrated, meaning a 70% risk model output does not map to 70% of real-world events.
+* **The Solution:** We train an **XGBoost Binary Classifier** to predict if an incident will escalate (a high-severity event running >4 hours). An **Isotonic Calibration** layer is fitted on a validation hold-out set, mapping model logits to empirical frequencies. This reduces the Brier score error to **`0.038`**—ensuring predicted risks are mathematically reliable for controllers.
+
+#### 🕸️ Road Network Topology & Graph Centrality (Spatial Engineering)
+* **The Problem:** Standard geographical coordinates (latitude/longitude) fail to capture the relational and structural importance of Bengaluru's road grid.
+* **The Solution:** We construct a **NetworkX road graph** from historical event routes. Using this graph, we compute topological centrality metrics for every intersection:
+  * **Degree Centrality**
+  * **Betweenness Centrality** (identifies crucial bottlenecks)
+  * **Eigenvector Centrality** (identifies junctions connected to other critical junctions)
+  These scores are mapped back to junctions and corridors as features, giving the gradient-boosted trees direct structural awareness of the city's network fragility.
+
+---
+
+### 3. Model Performance Summary
 
 | Model | Task | Technique | Result |
 |---|---|---|---|
