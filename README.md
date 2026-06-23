@@ -279,9 +279,9 @@ npm run dev
 
 ---
 
-## Team Members
+## Team- Bangaluru vs Traffic
 
 - **Harsh Sahu**
 - **Yash Chawla**
 - **Barsha Mondal**
-- **Arpan Kark**
+- **Arpan Karak**
