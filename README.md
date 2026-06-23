@@ -90,6 +90,26 @@ graph LR
     Predict --> SMS & WhatsApp
 ```
 
+---
+
+## Platform Previews
+
+### Core Command & ML Operations
+| **Operational Dashboard** | **What-If Simulator** |
+| :---: | :---: |
+| ![Dashboard](assets/dashboard.png) | ![Simulator](assets/simulator.png) |
+| **Historical Hotspot Map** | **Response Replay Autopsy** |
+| ![Map](assets/map.png) | ![Autopsy](assets/autopsy.png) |
+
+### AI Copilot & Localized Advisory Suite
+| **Kannada Public Broadcaster** | **Sancara AI Copilot** |
+| :---: | :---: |
+| ![Broadcaster](assets/broadcaster.png) | ![Copilot](assets/copilot.png) |
+| **Historical Risk Calendar** | **Planned Event Analysis** |
+| ![Calendar](assets/calendar.png) | ![Planned Events](assets/planned.png) |
+
+---
+
 ### Directory Structure
 ```
 api.py                     FastAPI backend endpoints
